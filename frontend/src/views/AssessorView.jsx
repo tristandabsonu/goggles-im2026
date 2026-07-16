@@ -366,14 +366,12 @@ export default function AssessorView() {
               {error}
             </div>
           )}
-          <aside className="advisory-note" aria-label="Advisory review safeguard">
-            <strong>Review assistance only</strong>
-            <span>
-              GOGgles never auto-rejects or stops an application from proceeding.
-              Assessors verify every finding and retain responsibility for any
-              follow-up and assessment decision.
-            </span>
-          </aside>
+          <p className="advisory-copy">
+            <strong>Review assistance only.</strong>{" "}
+            GOGgles never auto-rejects or stops an application from proceeding.
+            Assessors verify every finding and retain responsibility for any
+            follow-up and assessment decision.
+          </p>
           <div className="submit-row">
             <p>
               Use only public, synthetic or authorised test PDFs. Files are sent
