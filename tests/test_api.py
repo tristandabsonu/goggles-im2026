@@ -161,6 +161,9 @@ def test_compiled_frontend_is_served_from_the_root() -> None:
     assert "Extracted proposal sections" in javascript
     assert "Not assessed" in javascript
     assert "sent to Gemini for this check" in javascript
+    assert "GOGgles never blocks submission or auto-rejects" in javascript
+    assert "GOGgles cannot stop or auto-reject an application" in javascript
+    assert "GOGgles is not a submission gatekeeper" in javascript
     assert "See GOGgles results without the wait." in javascript
     assert "Live checks usually take 60–180 seconds." in javascript
     assert "About model variability" in javascript

@@ -85,6 +85,12 @@ export default function HowItWorksView() {
                 relevant source. A person verifies the evidence, writes any change
                 and makes every assessment or funding decision.
               </p>
+              <p>
+                GOGgles is not a submission gatekeeper. A writer can still submit
+                when a field is unchecked or flagged, and the application
+                continues if the AI check fails. GOGgles never auto-rejects an
+                application.
+              </p>
             </div>
           </article>
         </section>

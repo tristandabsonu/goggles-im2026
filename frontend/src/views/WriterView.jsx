@@ -653,8 +653,9 @@ export default function WriterView() {
           )}
           <div className="submit-row">
             <p>
-              Each marked answer is checked in a separate call. You write every
-              change.
+              Advisory only. GOGgles never blocks submission or auto-rejects an
+              application. A writer can continue when a field is unchecked,
+              flagged or the AI check fails, and writes every change themselves.
             </p>
             <button className="primary-button" disabled={loading}>
               {loading ? "Checking draft…" : "Check assessable fields"}

@@ -7,6 +7,7 @@
 3. Actionable findings are grounded in structured document references.
 4. Writer fields are assessed independently; other draft answers are excluded.
 5. Assessor mode may use the complete proposal for cross-section context.
+6. A check never blocks submission or automatically rejects an application.
 6. Documents are processed in memory and discarded after the request.
 7. Only the NAIDOC dataset and named checks are claimed as validated.
 

@@ -19,7 +19,9 @@ It has two views:
 
 - **Writer** checks selected draft fields independently and gives inline
   guidance. It never writes replacement text or uses one draft answer to excuse
-  ambiguity in another.
+  ambiguity in another. Its advice never blocks submission or automatically
+  rejects an application; a writer may continue when a field is unchecked,
+  flagged or the check fails.
 - **Assessor** checks a submitted proposal against supplied program documents
   and returns cited review comments. It never scores, approves or rejects.
 

@@ -265,7 +265,7 @@ export function ResultPanel({
         <h2>Check results</h2>
         <p>
           Every result is a comment for a person to verify, not an assessment
-          decision.
+          decision. GOGgles cannot stop or auto-reject an application.
         </p>
       </div>
       {controls}
