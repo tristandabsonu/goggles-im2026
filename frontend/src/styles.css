@@ -222,7 +222,7 @@ select { width: 100%; padding: 10px; margin-bottom: 8px; font-size: 13px; }
 .progress-marker .spinner { width: 16px; height: 16px; }
 
 .results { margin-top: 70px; }
-.extraction-panel { margin-top: 28px; padding: clamp(20px, 3vw, 28px); border: 1px solid #bdd3e0; border-radius: 18px; background: var(--primary-surface); }
+.extraction-panel { margin-bottom: 28px; padding: clamp(20px, 3vw, 28px); border: 1px solid #bdd3e0; border-radius: 18px; background: var(--primary-surface); }
 .extraction-heading { display: flex; justify-content: space-between; align-items: flex-start; gap: 20px; }
 .extraction-heading h3 { margin: 6px 0 0; font-family: Georgia, serif; font-size: 27px; }
 .extraction-count { flex: 0 0 auto; border-radius: 999px; padding: 6px 10px; background: var(--forest); color: white; font-size: 10px; font-weight: 800; }

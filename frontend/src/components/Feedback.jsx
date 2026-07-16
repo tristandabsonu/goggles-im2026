@@ -223,6 +223,10 @@ function ResultBody({ result }) {
 
   return (
     <>
+      <ExtractedFieldsPanel
+        sections={result.extracted_sections}
+        assessedSectionIds={assessedSectionIds}
+      />
       {!!result.threshold_flags.length && (
         <div className="thresholds">
           {result.threshold_flags.map((flag, index) => (
@@ -243,10 +247,6 @@ function ResultBody({ result }) {
           <SectionCard section={section} key={section.id} />
         ))}
       </div>
-      <ExtractedFieldsPanel
-        sections={result.extracted_sections}
-        assessedSectionIds={assessedSectionIds}
-      />
     </>
   );
 }
