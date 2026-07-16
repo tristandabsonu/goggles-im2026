@@ -60,12 +60,13 @@ export default function HowItWorksView() {
             <h2>The vision</h2>
             <div className="how-narrative-copy">
               <p>
-                A leveller. The aim is to give communities practical,
-                source-grounded feedback before they submit; assessors get the
-                repeatable first pass done so their time can go to merit, evidence
-                and local context. Every finding points back to the supplied
-                guidance for a person to verify, and every decision remains with a
-                human.
+                A leveller for the grants process. Communities without
+                grant-writing experience get the kind of feedback an experienced
+                writer would give before submission, while assessors get the
+                mechanical first pass done for them, freeing their judgement for
+                merit, evidence and local context. Every finding traces back to the
+                supplied guidance for a person to verify, and every decision
+                remains with a human.
               </p>
             </div>
           </article>
@@ -85,11 +86,11 @@ export default function HowItWorksView() {
                 relevant source. A person verifies the evidence, writes any change
                 and makes every assessment or funding decision.
               </p>
-              <p>
-                GOGgles is not a submission gatekeeper. A writer can still submit
-                when a field is unchecked or flagged, and the application
-                continues if the AI check fails. GOGgles never auto-rejects an
-                application.
+              <p className="how-principle">
+                <strong>GOGgles is not a submission gatekeeper.</strong>{" "}
+                A writer can still submit when a field is unchecked or flagged,
+                and the application continues if the AI check fails. GOGgles
+                never auto-rejects an application.
               </p>
             </div>
           </article>

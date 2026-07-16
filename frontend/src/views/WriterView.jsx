@@ -651,12 +651,17 @@ export default function WriterView() {
               {error}
             </div>
           )}
+          <aside className="advisory-note" aria-label="Advisory check safeguard">
+            <strong>Advisory only</strong>
+            <span>
+              GOGgles never blocks submission or auto-rejects an application.
+              Writers can continue when a field is unchecked or flagged, or if
+              the AI check fails. Writers decide whether to act on the feedback
+              and remain the author of every change.
+            </span>
+          </aside>
           <div className="submit-row">
-            <p>
-              Advisory only. GOGgles never blocks submission or auto-rejects an
-              application. A writer can continue when a field is unchecked,
-              flagged or the AI check fails, and writes every change themselves.
-            </p>
+            <p>Each marked answer is checked in a separate call.</p>
             <button className="primary-button" disabled={loading}>
               {loading ? "Checking draft…" : "Check assessable fields"}
             </button>
