@@ -131,11 +131,12 @@ scenario or overstate what was tested.
 ## Deployment shape
 
 `render.yaml` prepares one paid Starter FastAPI service in Render's Singapore
-region with automatic deploys off. It installs `requirements.txt`, serves the
-existing `frontend/dist` build, uses `/health`, sets the tested
-`gemini-3.5-flash` model and receives `GEMINI_API_KEY` as a dashboard secret.
-There is no database, persistent worker service, disk or separate frontend
-service.
+region. GitHub Actions runs the no-cost backend checks and verifies a clean
+frontend production build; Render's `checksPass` trigger deploys `main` only
+after those checks pass. Render installs `requirements.txt`, serves the existing
+`frontend/dist` build, uses `/health`, sets the tested `gemini-3.5-flash` model
+and receives `GEMINI_API_KEY` as a dashboard secret. There is no database,
+persistent worker service, disk or separate frontend service.
 
 Deployment requires explicit authorisation. Minimum release verification is the
 health route, frontend routes and assets, an allowed demo PDF, a 404 for the

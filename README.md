@@ -58,10 +58,29 @@ npm run build
 Frontend builds require Node 20.19 or newer. FastAPI serves `frontend/dist`, so
 rebuild it after frontend changes.
 
+GitHub Actions runs the same no-cost backend checks and a clean frontend build
+on every push to `main` and on pull requests. The frontend job also fails when
+the committed `frontend/dist` artifact is older than the React source.
+
+## Make and deploy a change
+
+After making and verifying a change:
+
+```bash
+git add --all
+git commit -m "Describe the change"
+git push
+```
+
+The push starts the `Verify` workflow in GitHub. Render is configured with
+`autoDeployTrigger: checksPass`, so a linked Render service deploys the new
+commit only after both GitHub Actions jobs pass. A failed check leaves the
+currently deployed version running.
+
 Live tests and example-result regeneration spend API credit and require explicit
 authorisation. Never send `demo/naidoc/test-cases/expected-results.md` to Gemini;
 it is the local human answer key.
 
 `render.yaml` prepares one FastAPI service that also serves the compiled
-frontend. Deployment, account connection, paid-resource creation and publication
+frontend. Initial account connection, paid-resource creation and publication
 remain external actions requiring explicit authorisation.
