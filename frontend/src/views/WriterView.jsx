@@ -293,7 +293,7 @@ export default function WriterView() {
           <strong>Prototype data only</strong>
           <span>
             Use fictional or authorised information. Administrative details stay
-            in your browser; only fields marked “AI check” are sent to Gemini for
+            in your browser; only fields marked “AI check” are sent to GOGgles for
             review.
           </span>
         </div>
