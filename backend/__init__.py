@@ -1,0 +1,1 @@
+"""GOGgles competition prototype backend."""

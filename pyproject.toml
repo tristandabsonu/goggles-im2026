@@ -1,0 +1,6 @@
+[tool.pytest.ini_options]
+addopts = "-ra"
+markers = [
+    "live: makes a real Gemini Developer API call and may spend credit",
+]
+testpaths = ["tests"]

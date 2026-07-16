@@ -1,0 +1,1110 @@
+{
+  "schema_version": 1,
+  "model": "gemini-3.5-flash",
+  "model_label": "Gemini 3.5 Flash",
+  "examples": [
+    {
+      "id": "application_01",
+      "tab_label": "01 · Out-of-scope costs",
+      "proposal_filename": "synthetic-application-01.pdf",
+      "model": "gemini-3.5-flash",
+      "captured_at": "2026-07-15T04:54:39+00:00",
+      "duration_seconds": 88.4,
+      "result": {
+        "mode": "assessor",
+        "extracted_sections": [
+          {
+            "id": "eligibility",
+            "header": "Eligibility Requirement",
+            "type": "generic",
+            "text": "What is the Applicant’s legal entity type? *\nIncorporated association\n\nIs the Applicant able to provide documentation to support the entity type? *\n[X] Yes; [ ] No\n\nPlease provide your supporting documentation. *\nAttachment B - synthetic certificate of incorporation\n\nPermanent resident of Australia? *\nNot applicable - applicant is not a Sole Trader.\n\nCommonwealth agreement compliance*\n[ ] Yes; [X] No\nNo outstanding compliance issues with Commonwealth agreements.\n\nChild Safety Statement*\n[X] Yes - I can confirm\n\nWorking with vulnerable persons *\n[X] Yes - relevant personnel hold the required checks.",
+            "order": 1,
+            "source_pages": [
+              6,
+              7,
+              8
+            ]
+          },
+          {
+            "id": "funding_stream",
+            "header": "Activity/Event Details - Funding Stream",
+            "type": "generic",
+            "text": "Which Funding Stream are you applying under?*\nStream Two - Small-scale (up to $10,000)\n\nFinancials\n2025-2026 (exc GST): $8,800.00\nTotal funding: $8,800.00\nApproximate percentage: 100%\n\nSummary\n2025-2026 total: $8,800.00\nTotal funding: $8,800.00",
+            "order": 2,
+            "source_pages": [
+              13,
+              18
+            ]
+          },
+          {
+            "id": "activity_description",
+            "header": "Provide a brief description of your activity/event",
+            "type": "description",
+            "text": "Geraldton Community Storytelling Dance and Art Day\n\nRed Sand Community Arts Association will hold a free community day in Geraldton on 11 July 2026. Local First Nations cultural practitioners will lead storytelling, dance and visual art activities that share local histories and celebrate the skills and achievements of First Nations artists. Families will rotate through facilitated workshops before a public performance and community reflection. The activity was developed with the association’s First Nations-controlled committee and will increase community participation in cultural expression. Each participant will also receive a NAIDOC T-shirt, and branded banners and social-media promotion will advertise the day.\n\nProposal Start Date: 11/07/2026\nProposal End Date: 11/07/2026\nIn which service area/s is the Applicant proposing to deliver the Project/Activity? Geraldton\n\nDelivery Location\nLocation Name: Geraldton Community Hall (synthetic venue)\nAddress: 1 Example Road, Geraldton WA 6530",
+            "order": 3,
+            "source_pages": [
+              14,
+              15,
+              16
+            ]
+          },
+          {
+            "id": "co_contributions",
+            "header": "Co-contributions",
+            "type": "generic",
+            "text": "[X] Volunteer time; [X] donations\nThirty volunteer hours are valued at $1,600, and refreshments valued at $700 will be donated.",
+            "order": 4,
+            "source_pages": [
+              16
+            ]
+          },
+          {
+            "id": "budget",
+            "header": "Budget",
+            "type": "budget",
+            "text": "| Budget item | Amount (GST exclusive) |\n| --- | --- |\n| Welcome to Country and cultural performances | $3,200.00 |\n| First Nations artist-led workshops | $2,400.00 |\n| Venue and event equipment hire | $1,400.00 |\n| NAIDOC T-shirts for participants | $1,000.00 |\n| Branded banners and social-media promotion | $800.00 |\n| Total budget amount | $8,800.00 |",
+            "order": 5,
+            "source_pages": [
+              19,
+              20
+            ]
+          },
+          {
+            "id": "attachments",
+            "header": "Attachments",
+            "type": "generic",
+            "text": "Attachment A - Synthetic bank account verification: Statement date: 15 January 2026. Account name: Red Sand Community Arts Association Inc. BSB: 000001. Account number: 00000001. Balances and transactions omitted. Synthetic test document.\nAttachment B - Synthetic entity evidence: Confirms the fictional legal entity and entity type recorded for Red Sand Community Arts Association Inc.\nAttachment C - Synthetic recent financial statements: Summary financial statements for Red Sand Community Arts Association Inc. The fictional applicant is financially viable for the proposed activity.",
+            "order": 6,
+            "source_pages": [
+              25
+            ]
+          }
+        ],
+        "sections": [
+          {
+            "id": "funding_stream",
+            "header": "Activity/Event Details - Funding Stream",
+            "type": "funding_stream",
+            "order": 2,
+            "findings": [],
+            "budget_items": [],
+            "has_threshold_flag": false,
+            "error": null
+          },
+          {
+            "id": "budget",
+            "header": "Budget",
+            "type": "budget",
+            "order": 5,
+            "findings": [],
+            "budget_items": [
+              {
+                "item": "Welcome to Country and cultural performances",
+                "amount": "$3,200.00",
+                "classification": "in_scope",
+                "comment": "",
+                "suggested_action": "",
+                "sources": [],
+                "clarification_evidence": null
+              },
+              {
+                "item": "First Nations artist-led workshops",
+                "amount": "$2,400.00",
+                "classification": "in_scope",
+                "comment": "",
+                "suggested_action": "",
+                "sources": [],
+                "clarification_evidence": null
+              },
+              {
+                "item": "Venue and event equipment hire",
+                "amount": "$1,400.00",
+                "classification": "in_scope",
+                "comment": "",
+                "suggested_action": "",
+                "sources": [],
+                "clarification_evidence": null
+              },
+              {
+                "item": "NAIDOC T-shirts for participants",
+                "amount": "$1,000.00",
+                "classification": "out_of_scope",
+                "comment": "Costumes, clothing and merchandise including clothing for staff and/or event participants such as t-shirts are explicitly listed as out-of-scope for NAIDOC Local Grants funding.",
+                "suggested_action": "Remove the $1,000.00 allocated for participant T-shirts from the requested grant amount, or seek alternative funding sources.",
+                "sources": [
+                  {
+                    "document": "Selection Criteria (GOG): NAIDOC 2026 Local Grants Opportunity - Grant Opportunity Guidelines",
+                    "reference": "Section 5.4, Page 12",
+                    "excerpt": "costumes, clothing and merchandise (NAIDOC themed or otherwise) including clothing for staff and/or event participants such as t-shirts, hats, lanyards, wristbands, key rings, bag tags;"
+                  }
+                ],
+                "clarification_evidence": null
+              },
+              {
+                "item": "Branded banners and social-media promotion",
+                "amount": "$800.00",
+                "classification": "out_of_scope",
+                "comment": "Advertising and promotional materials (such as banners with branding) and social media campaigns are explicitly out-of-scope under the grant guidelines.",
+                "suggested_action": "Remove the $800.00 advertising cost from the requested grant budget.",
+                "sources": [
+                  {
+                    "document": "Selection Criteria (GOG): NAIDOC 2026 Local Grants Opportunity - Grant Opportunity Guidelines",
+                    "reference": "Section 5.4, Page 12",
+                    "excerpt": "advertising, promotional materials, (e.g. banners etc. with an organisation’s branding), marketing, printing, social media campaigns;"
+                  }
+                ],
+                "clarification_evidence": null
+              }
+            ],
+            "has_threshold_flag": false,
+            "error": null
+          },
+          {
+            "id": "attachments",
+            "header": "Attachments",
+            "type": "attachments",
+            "order": 6,
+            "findings": [],
+            "budget_items": [],
+            "has_threshold_flag": false,
+            "error": null
+          }
+        ],
+        "threshold_flags": []
+      }
+    },
+    {
+      "id": "application_02",
+      "tab_label": "02 · Vague budget lines",
+      "proposal_filename": "synthetic-application-02.pdf",
+      "model": "gemini-3.5-flash",
+      "captured_at": "2026-07-15T04:12:25+00:00",
+      "duration_seconds": 76.9,
+      "result": {
+        "mode": "assessor",
+        "extracted_sections": [
+          {
+            "id": "eligibility",
+            "header": "Eligibility Requirement",
+            "type": "generic",
+            "text": "What is the Applicant’s legal entity type? *\nIncorporated association\n\nIs the Applicant able to provide documentation to support the entity type? *\n[X] Yes; [ ] No\n\nPlease provide your supporting documentation. *\nAttachment B - synthetic certificate of incorporation\n\nPermanent resident of Australia? *\nNot applicable - applicant is not a Sole Trader.\n\nCommonwealth agreement compliance*\n[ ] Yes; [X] No\nNo outstanding compliance issues with Commonwealth agreements.\n\nChild Safety Statement*\n[X] Yes - I can confirm\n\nWorking with vulnerable persons *\n[X] Yes - relevant personnel hold the required checks.",
+            "order": 1,
+            "source_pages": [
+              5,
+              6,
+              7,
+              8
+            ]
+          },
+          {
+            "id": "funding_stream",
+            "header": "Activity/Event Details",
+            "type": "generic",
+            "text": "Which Funding Stream are you applying under?*\nStream Two - Small-scale (up to $10,000)\n\nProvide a short title (including location, suburb or school name) of your Application for this activity/event. *\nNewcastle Elders Storytelling and Weaving Afternoon",
+            "order": 2,
+            "source_pages": [
+              13,
+              14
+            ]
+          },
+          {
+            "id": "activity_description",
+            "header": "Provide a brief description of your activity/event and how it meets the objectives of the NAIDOC Local Grants Opportunity. *",
+            "type": "description",
+            "text": "Harbour Lights Community Association will hold a free afternoon gathering in Newcastle on 18 July 2026. First Nations cultural practitioners will share stories with families, lead introductory weaving activities and facilitate a community conversation about local histories and cultural continuity. The association’s First Nations-controlled committee shaped the program and volunteers will welcome participants and assist with accessibility. The activity supports cultural expression, intergenerational engagement and broader understanding of First Nations cultures.",
+            "order": 3,
+            "source_pages": [
+              14
+            ]
+          },
+          {
+            "id": "co_contributions",
+            "header": "Co-contributions *",
+            "type": "generic",
+            "text": "[X] Volunteer time; [X] venue and equipment hire\nVolunteer support is valued at $1,200 and donated venue use at $800.",
+            "order": 4,
+            "source_pages": [
+              16
+            ]
+          },
+          {
+            "id": "budget",
+            "header": "Budget *",
+            "type": "budget",
+            "text": "Budget item\tAmount (GST exclusive)\nEvent delivery\t$5,500.00\nMaterials and supplies\t$2,500.00\nOther\t$1,000.00\nTotal budget amount\t$9,000.00",
+            "order": 5,
+            "source_pages": [
+              19
+            ]
+          },
+          {
+            "id": "attachments",
+            "header": "Attachments",
+            "type": "generic",
+            "text": "Attachment A - Synthetic bank account verification: Statement date: 15 January 2026. Account name: Harbour Lights Community Association Inc. BSB: 000002. Account number: 00000002. Balances and transactions omitted. Synthetic test document.\nAttachment B - Synthetic entity evidence: Confirms the fictional legal entity and entity type recorded for Harbour Lights Community Association Inc.\nAttachment C - Synthetic recent financial statements: Summary financial statements for Harbour Lights Community Association Inc. The fictional applicant is financially viable for the proposed activity.",
+            "order": 6,
+            "source_pages": [
+              25
+            ]
+          }
+        ],
+        "sections": [
+          {
+            "id": "funding_stream",
+            "header": "Activity/Event Details",
+            "type": "funding_stream",
+            "order": 2,
+            "findings": [],
+            "budget_items": [],
+            "has_threshold_flag": false,
+            "error": null
+          },
+          {
+            "id": "budget",
+            "header": "Budget *",
+            "type": "budget",
+            "order": 5,
+            "findings": [],
+            "budget_items": [
+              {
+                "item": "Event delivery",
+                "amount": "$5,500.00",
+                "classification": "vague",
+                "comment": "The budget label 'Event delivery' is too broad to determine if the proposed expenditures are in-scope under Section 5.1 of the Guidelines. There is no breakdown or explanation of this cost elsewhere in the application.",
+                "suggested_action": "Please provide an itemised breakdown of the 'Event delivery' costs, identifying specific expenditures (such as practitioner fees or hiring costs).",
+                "sources": [
+                  {
+                    "document": "Selection Criteria (GOG): NAIDOC 2026 Local Grants Opportunity - Grant Opportunity Guidelines",
+                    "reference": "Section 7, Page 15",
+                    "excerpt": "a budget with a full breakdown of all activity / event costs"
+                  }
+                ],
+                "clarification_evidence": null
+              },
+              {
+                "item": "Materials and supplies",
+                "amount": "$2,500.00",
+                "classification": "vague",
+                "comment": "The label 'Materials and supplies' is too generic. It cannot be determined if these include ineligible school curriculum resources or other out-of-scope items listed under Section 5.4.",
+                "suggested_action": "Please list the specific materials and supplies to be purchased with these funds to confirm they are in-scope.",
+                "sources": [
+                  {
+                    "document": "Selection Criteria (GOG): NAIDOC 2026 Local Grants Opportunity - Grant Opportunity Guidelines",
+                    "reference": "Section 5.4, Page 12",
+                    "excerpt": "curriculum resources and other activities that would be covered by schools funding (e.g. paint, art smocks, beads, pencils, paper, scissors, containers, printing)"
+                  }
+                ],
+                "clarification_evidence": null
+              },
+              {
+                "item": "Other",
+                "amount": "$1,000.00",
+                "classification": "vague",
+                "comment": "The label 'Other' does not describe the components or purpose of the requested funding, and no further details are provided in the application.",
+                "suggested_action": "Please specify what this category will pay for to demonstrate it is in-scope under Section 5.1.",
+                "sources": [
+                  {
+                    "document": "Selection Criteria (GOG): NAIDOC 2026 Local Grants Opportunity - Grant Opportunity Guidelines",
+                    "reference": "Section 7, Page 15",
+                    "excerpt": "a budget with a full breakdown of all activity / event costs"
+                  }
+                ],
+                "clarification_evidence": null
+              }
+            ],
+            "has_threshold_flag": false,
+            "error": null
+          },
+          {
+            "id": "attachments",
+            "header": "Attachments",
+            "type": "attachments",
+            "order": 6,
+            "findings": [],
+            "budget_items": [],
+            "has_threshold_flag": false,
+            "error": null
+          }
+        ],
+        "threshold_flags": []
+      }
+    },
+    {
+      "id": "application_03",
+      "tab_label": "03 · Funding stream",
+      "proposal_filename": "synthetic-application-03.pdf",
+      "model": "gemini-3.5-flash",
+      "captured_at": "2026-07-15T04:13:48+00:00",
+      "duration_seconds": 82.1,
+      "result": {
+        "mode": "assessor",
+        "extracted_sections": [
+          {
+            "id": "eligibility",
+            "header": "Eligibility Requirement",
+            "type": "generic",
+            "text": "Company incorporated in Australia; single educational institution\n\nIs the Applicant able to provide documentation to support the entity type? *\n[X] Yes; [ ] No\n\nPlease provide your supporting documentation. *\nAttachment B - synthetic company registration and educational institution evidence\n\nPermanent resident of Australia? *\nNot applicable - applicant is not a Sole Trader.\n\nCommonwealth agreement compliance*\n[ ] Yes; [X] No\nNo outstanding compliance issues with Commonwealth agreements.\n\nChild Safety Statement*\n[X] Yes - I can confirm\n\nWorking with vulnerable persons *\n[X] Yes - relevant personnel hold the required checks.",
+            "order": 1,
+            "source_pages": [
+              6,
+              7,
+              8
+            ]
+          },
+          {
+            "id": "funding_stream",
+            "header": "Which Funding Stream are you applying under?*",
+            "type": "generic",
+            "text": "Stream Two - Small-scale (up to $10,000)\n\nProvide a breakdown of the NAIDOC Local Grant funding requested for each service area/s.\n2025-2026 (exc GST): $6,000.00\nTotal funding: $6,000.00\nApproximate percentage: 100%\n\nSummary\n2025-2026 total: $6,000.00\nTotal funding: $6,000.00",
+            "order": 2,
+            "source_pages": [
+              13,
+              18
+            ]
+          },
+          {
+            "id": "activity_description",
+            "header": "Provide a brief description of your activity/event and how it meets the objectives of the NAIDOC Local Grants Opportunity. *",
+            "type": "description",
+            "text": "Banksia Coast Independent Primary School will hold a free cultural learning day for its own students and families in Mandurah on 24 July 2026. Confirmed First Nations cultural presenters will lead storytelling, dance and cultural-learning sessions that celebrate First Nations histories, cultures and achievements. The activity is solely for this one school. No other educational institutions are involved, and the school has not sought or received prior approval to apply under Stream Two.",
+            "order": 3,
+            "source_pages": [
+              14
+            ]
+          },
+          {
+            "id": "co_contributions",
+            "header": "Co-contributions *",
+            "type": "generic",
+            "text": "[X] Volunteer time; [X] venue and equipment hire\nSchool staff time and use of the school grounds are valued at $2,500.",
+            "order": 4,
+            "source_pages": [
+              16
+            ]
+          },
+          {
+            "id": "budget",
+            "header": "Budget *",
+            "type": "budget",
+            "text": "Budget item | Amount (GST exclusive)\nFirst Nations cultural presenters | $3,000.00\nFirst Nations dance performance | $2,000.00\nWelcome to Country | $1,000.00\nTotal budget amount | $6,000.00",
+            "order": 5,
+            "source_pages": [
+              19
+            ]
+          },
+          {
+            "id": "attachments",
+            "header": "Attachments",
+            "type": "generic",
+            "text": "Attachment A - Synthetic bank account verification: Statement date: 15 January 2026. Account name: Banksia Coast Independent Primary School Ltd. BSB: 000003. Account number: 00000003. Balances and transactions omitted. Synthetic test document.\nAttachment B - Synthetic entity evidence: Confirms the fictional legal entity and entity type recorded for Banksia Coast Independent Primary School Ltd.\nAttachment C - Synthetic recent financial statements: Summary financial statements for Banksia Coast Independent Primary School Ltd. The fictional applicant is financially viable for the proposed activity.\nAttachment D - Synthetic local First Nations community support letter: Confirms community support for the school’s proposed cultural learning day.\n\nPartnership and Sole Trader Letters of Support\nNot applicable - applicant is neither a Partnership nor a Sole Trader.\n\nNon-Indigenous Applicants\nAttachment D - synthetic letter confirming local First Nations community support.\n\nAssessment Criterion Evidence of Support\nNo optional assessment-criterion evidence attached.",
+            "order": 6,
+            "source_pages": [
+              24,
+              25
+            ]
+          }
+        ],
+        "sections": [
+          {
+            "id": "funding_stream",
+            "header": "Which Funding Stream are you applying under?*",
+            "type": "funding_stream",
+            "order": 2,
+            "findings": [],
+            "budget_items": [],
+            "has_threshold_flag": true,
+            "error": null
+          },
+          {
+            "id": "budget",
+            "header": "Budget *",
+            "type": "budget",
+            "order": 5,
+            "findings": [],
+            "budget_items": [
+              {
+                "item": "First Nations cultural presenters",
+                "amount": "$3,000.00",
+                "classification": "in_scope",
+                "comment": "",
+                "suggested_action": "",
+                "sources": [
+                  {
+                    "document": "Selection Criteria (GOG): NAIDOC 2026 Local Grants Opportunity - Grant Opportunity Guidelines",
+                    "reference": "Section 5.1, Page 11",
+                    "excerpt": "presentation by a First Nations person on First Nations histories and cultures;"
+                  }
+                ],
+                "clarification_evidence": null
+              },
+              {
+                "item": "First Nations dance performance",
+                "amount": "$2,000.00",
+                "classification": "in_scope",
+                "comment": "",
+                "suggested_action": "",
+                "sources": [
+                  {
+                    "document": "Selection Criteria (GOG): NAIDOC 2026 Local Grants Opportunity - Grant Opportunity Guidelines",
+                    "reference": "Section 5.1, Page 11",
+                    "excerpt": "arts based activities, including design work, painting, dancing, crafts and storytelling;"
+                  }
+                ],
+                "clarification_evidence": null
+              },
+              {
+                "item": "Welcome to Country",
+                "amount": "$1,000.00",
+                "classification": "in_scope",
+                "comment": "",
+                "suggested_action": "",
+                "sources": [
+                  {
+                    "document": "Selection Criteria (GOG): NAIDOC 2026 Local Grants Opportunity - Grant Opportunity Guidelines",
+                    "reference": "Section 5.1, Page 11",
+                    "excerpt": "cultural activities, including Welcome to Country;"
+                  }
+                ],
+                "clarification_evidence": null
+              }
+            ],
+            "has_threshold_flag": false,
+            "error": null
+          },
+          {
+            "id": "attachments",
+            "header": "Attachments",
+            "type": "attachments",
+            "order": 6,
+            "findings": [],
+            "budget_items": [],
+            "has_threshold_flag": false,
+            "error": null
+          }
+        ],
+        "threshold_flags": [
+          {
+            "code": "funding_stream_review",
+            "comment": "The applicant has selected Stream Two - Small-scale (up to $10,000) for a total requested amount of $6,000.00. However, the applicant is identified as a single educational institution ('Banksia Coast Independent Primary School Ltd') delivering an activity ('Banksia Coast Primary School Cultural Learning Day Mandurah') solely for its own students and families, without prior written approval from the NIAA. Under the GOG, if an application is deemed to be for the benefit of one or more educational institutions, the NIAA will determine if the application should have been submitted under Stream One (maximum funding of $1,500), and prior written approval is required to apply for Stream Two.",
+            "suggested_action": "NIAA delegates should review whether this application should be considered under Stream One (capped at $1,500) rather than Stream Two, and determine if prior written approval was obtained.",
+            "sources": [
+              {
+                "document": "Selection Criteria (GOG): NAIDOC 2026 Local Grants Opportunity - Grant Opportunity Guidelines",
+                "reference": "Page 6, Section 2.1, Stream One – Educational Institution Grants – Demand Driven; Page 7, Section 2.1",
+                "excerpt": "This stream is for activities / events to be run by, or held for the benefit of, educational institutions... The maximum amount of funding you can apply for under this stream is $1,500 (excluding GST)... If an application is submitted under Streams Two or Three and is deemed by the NIAA to be for the benefit of one or more educational institutions, the NIAA will determine if the application should have been submitted under Stream One. If so, the application will be considered under Stream One, including only being considered for funding of up to $1,500 (excluding GST). Prior written approval for educational institutions to apply for Stream Two - Small-Scale Grants should be sought from NAIDOCgrants@niaa.gov.au before an application is lodged."
+              },
+              {
+                "document": "Grant Application: synthetic-application-03",
+                "reference": "Page 14, Activity/Event Details",
+                "excerpt": "Banksia Coast Independent Primary School will hold a free cultural learning day for its own students and families in Mandurah on 24 July 2026... The activity is solely for this one school. No other educational institutions are involved, and the school has not sought or received prior approval to apply under Stream Two."
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "application_04",
+      "tab_label": "04 · Criterion evidence",
+      "proposal_filename": "synthetic-application-04.pdf",
+      "model": "gemini-3.5-flash",
+      "captured_at": "2026-07-15T04:15:26+00:00",
+      "duration_seconds": 98.7,
+      "result": {
+        "mode": "assessor",
+        "extracted_sections": [
+          {
+            "id": "eligibility",
+            "header": "Eligibility Requirement",
+            "type": "generic",
+            "text": "What is the Applicant’s legal entity type? *\nIncorporated association\n\nIs the Applicant able to provide documentation to support the entity type? *\n[X] Yes; [ ] No\n\nPlease provide your supporting documentation. *\nAttachment B - synthetic certificate of incorporation\n\nPermanent resident of Australia? *\nNot applicable - applicant is not a Sole Trader.\n\nCommonwealth agreement compliance*\n[ ] Yes; [X] No\nNo outstanding compliance issues with Commonwealth agreements.",
+            "order": 1,
+            "source_pages": [
+              5,
+              6,
+              7
+            ]
+          },
+          {
+            "id": "funding_stream",
+            "header": "Which Funding Stream are you applying under?*",
+            "type": "generic",
+            "text": "Stream Three - Large-scale (more than $10,000 and up to $25,000)",
+            "order": 2,
+            "source_pages": [
+              13
+            ]
+          },
+          {
+            "id": "activity_description",
+            "header": "Provide a brief description of your activity/event and how it meets the objectives of the NAIDOC Local Grants Opportunity. *",
+            "type": "description",
+            "text": "Desert River Cultural Network will deliver a free two-day cultural showcase in Alice Springs on 8 and 9 August 2026. The event will feature First Nations dance and music performances, artist-led workshops, storytelling sessions and a bush-tucker cooking demonstration. The program was selected by the network’s First Nations-controlled committee following community meetings. It will provide paid opportunities for cultural practitioners, support intergenerational sharing and invite the wider community to learn about and celebrate First Nations histories, cultures and achievements.",
+            "order": 3,
+            "source_pages": [
+              14
+            ]
+          },
+          {
+            "id": "criterion_1",
+            "header": "Criterion 1: Demonstrated Experience, Resources and Capability *",
+            "type": "generic",
+            "text": "Our organisation has delivered community events before and has staff and volunteers available. We believe the event offers value and will benefit the community. Risks will be managed through our usual processes.",
+            "order": 4,
+            "source_pages": [
+              16,
+              17
+            ]
+          },
+          {
+            "id": "co_contributions",
+            "header": "Co-contributions (detailed breakdown) *",
+            "type": "generic",
+            "text": "Source of co-contribution | Amount (exc GST) | Secured | Can proceed without it\nLocal council venue support | $4,000.00 | Yes | Yes\nVolunteer time | $3,000.00 | Yes | Yes\nCommunity business catering donation | $1,500.00 | Yes | Yes\nTotal co-contributions | $8,500.00",
+            "order": 5,
+            "source_pages": [
+              17
+            ]
+          },
+          {
+            "id": "budget",
+            "header": "Budget *",
+            "type": "budget",
+            "text": "Budget item | Amount (GST exclusive)\nFirst Nations cultural performers | $7,000.00\nFirst Nations artist workshop facilitation | $5,000.00\nVenue staging and PA hire | $5,000.00\nEvent first-aid and safety services | $2,000.00\nBush-tucker cooking demonstration supplies | $1,500.00\nTotal budget amount | $20,500.00",
+            "order": 6,
+            "source_pages": [
+              19,
+              20
+            ]
+          },
+          {
+            "id": "attachments",
+            "header": "Attachments",
+            "type": "generic",
+            "text": "Attachment A - Synthetic bank account verification: Statement date: 15 January 2026. Account name: Desert River Cultural Network Inc. BSB: 000004. Account number: 00000004. Balances and transactions omitted. Synthetic test document.\nAttachment B - Synthetic entity evidence: Confirms the fictional legal entity and entity type recorded for Desert River Cultural Network Inc.\nAttachment C - Synthetic recent financial statements: Summary financial statements for Desert River Cultural Network Inc. The fictional applicant is financially viable for the proposed activity.",
+            "order": 7,
+            "source_pages": [
+              25
+            ]
+          }
+        ],
+        "sections": [
+          {
+            "id": "funding_stream",
+            "header": "Which Funding Stream are you applying under?*",
+            "type": "funding_stream",
+            "order": 2,
+            "findings": [],
+            "budget_items": [],
+            "has_threshold_flag": false,
+            "error": null
+          },
+          {
+            "id": "criterion_1",
+            "header": "Criterion 1: Demonstrated Experience, Resources and Capability *",
+            "type": "criterion",
+            "order": 4,
+            "findings": [
+              {
+                "comment": "The applicant's response to Criterion 1 contains very brief assertions of capability ('delivered community events before', 'has staff and volunteers available') and risk management ('managed through our usual processes') without detailing specific past experience, available resources, or risk controls. Furthermore, it asserts rather than demonstrates how the event represents value with relevant money. While the activity description on page 14 of the application provides useful context regarding the planned cultural showcase and its community outcomes, and the co-contributions table on page 17 outlines financial and non-financial support, this background context does not by itself substantiate the criterion response.",
+                "suggested_action": "Ask the applicant to provide concrete details regarding their prior event delivery experience, specific resources and staff capabilities allocated to this project, key risks (including work, health, and safety) and their respective mitigation strategies, and how the overall budget represents value with relevant money.",
+                "sources": [
+                  {
+                    "document": "Selection Criteria (GOG): NAIDOC 2026 Local Grants Opportunity - Grant Opportunity Guidelines",
+                    "reference": "Page 14, Criterion 1: Demonstrated Experience, Resources and Capability",
+                    "excerpt": "You should describe how: the proposed activity / event can deliver the intended outcomes... your experience, resources and capability will support you... risks associated... will be managed; and the proposed activity / event represents value with relevant money"
+                  },
+                  {
+                    "document": "Grant Application: synthetic-application-04",
+                    "reference": "Page 17, Criterion 1: Demonstrated Experience, Resources and Capability *",
+                    "excerpt": "Our organisation has delivered community events before and has staff and volunteers available. We believe the event offers value and will benefit the community. Risks will be managed through our usual processes."
+                  }
+                ]
+              }
+            ],
+            "budget_items": [],
+            "has_threshold_flag": false,
+            "error": null
+          },
+          {
+            "id": "budget",
+            "header": "Budget *",
+            "type": "budget",
+            "order": 6,
+            "findings": [],
+            "budget_items": [
+              {
+                "item": "First Nations cultural performers",
+                "amount": "$7,000.00",
+                "classification": "in_scope",
+                "comment": "",
+                "suggested_action": "",
+                "sources": [
+                  {
+                    "document": "Selection Criteria (GOG): NAIDOC 2026 Local Grants Opportunity - Grant Opportunity Guidelines",
+                    "reference": "Section 5.1 Eligible grant activities",
+                    "excerpt": "arts based activities, including design work, painting, dancing, crafts and storytelling;"
+                  }
+                ],
+                "clarification_evidence": null
+              },
+              {
+                "item": "First Nations artist workshop facilitation",
+                "amount": "$5,000.00",
+                "classification": "in_scope",
+                "comment": "",
+                "suggested_action": "",
+                "sources": [
+                  {
+                    "document": "Selection Criteria (GOG): NAIDOC 2026 Local Grants Opportunity - Grant Opportunity Guidelines",
+                    "reference": "Section 5.1 Eligible grant activities",
+                    "excerpt": "teaching of traditional symbols used in body painting, carving and other mediums (this could include having an artist in residence for the week);"
+                  }
+                ],
+                "clarification_evidence": null
+              },
+              {
+                "item": "Venue staging and PA hire",
+                "amount": "$5,000.00",
+                "classification": "in_scope",
+                "comment": "",
+                "suggested_action": "",
+                "sources": [
+                  {
+                    "document": "Selection Criteria (GOG): NAIDOC 2026 Local Grants Opportunity - Grant Opportunity Guidelines",
+                    "reference": "Section 5.1 Eligible grant activities",
+                    "excerpt": "the activity / event itself – not for the cost of preparations"
+                  }
+                ],
+                "clarification_evidence": null
+              },
+              {
+                "item": "Event first-aid and safety services",
+                "amount": "$2,000.00",
+                "classification": "in_scope",
+                "comment": "",
+                "suggested_action": "",
+                "sources": [
+                  {
+                    "document": "Selection Criteria (GOG): NAIDOC 2026 Local Grants Opportunity - Grant Opportunity Guidelines",
+                    "reference": "Section 5.1 Eligible grant activities",
+                    "excerpt": "the activity / event itself"
+                  }
+                ],
+                "clarification_evidence": null
+              },
+              {
+                "item": "Bush-tucker cooking demonstration supplies",
+                "amount": "$1,500.00",
+                "classification": "in_scope",
+                "comment": "",
+                "suggested_action": "",
+                "sources": [
+                  {
+                    "document": "Selection Criteria (GOG): NAIDOC 2026 Local Grants Opportunity - Grant Opportunity Guidelines",
+                    "reference": "Section 5.1 Eligible grant activities",
+                    "excerpt": "bush tucker and other community cooking activities;"
+                  }
+                ],
+                "clarification_evidence": null
+              }
+            ],
+            "has_threshold_flag": false,
+            "error": null
+          },
+          {
+            "id": "attachments",
+            "header": "Attachments",
+            "type": "attachments",
+            "order": 7,
+            "findings": [],
+            "budget_items": [],
+            "has_threshold_flag": false,
+            "error": null
+          }
+        ],
+        "threshold_flags": []
+      }
+    },
+    {
+      "id": "application_05",
+      "tab_label": "05 · Missing bank evidence",
+      "proposal_filename": "synthetic-application-05.pdf",
+      "model": "gemini-3.5-flash",
+      "captured_at": "2026-07-15T04:16:48+00:00",
+      "duration_seconds": 81.7,
+      "result": {
+        "mode": "assessor",
+        "extracted_sections": [
+          {
+            "id": "eligibility",
+            "header": "Eligibility Requirement",
+            "type": "generic",
+            "text": "What is the Applicant’s legal entity type? *\nIncorporated association\n\nIs the Applicant able to provide documentation to support the entity type? *\n[X] Yes; [ ] No\n\nPlease provide your supporting documentation. *\nAttachment B - synthetic certificate of incorporation\n\nPermanent resident of Australia? *\nNot applicable - applicant is not a Sole Trader.\n\nCommonwealth agreement compliance*\n[ ] Yes; [X] No\nNo outstanding compliance issues with Commonwealth agreements.\n\nChild Safety Statement*\n[X] Yes - I can confirm\n\nWorking with vulnerable persons *\n[X] Yes - relevant personnel hold the required checks.\n\nDoes the Applicant have the following documents? *\n1. Documented organisational and financial policies and procedures. *\n[X] Yes; [ ] No\n2. Business plan and/or strategic plan. *\n[X] Yes; [ ] No\n3. Risk management plan. *\n[X] Yes; [ ] No\n4. If applying as a Partnership – a formal agreement. *\nNot applicable - applicant is not a Partnership.",
+            "order": 1,
+            "source_pages": [
+              6,
+              7,
+              8,
+              13
+            ]
+          },
+          {
+            "id": "funding_stream",
+            "header": "Activity/Event Details - Funding Stream",
+            "type": "generic",
+            "text": "Which Funding Stream are you applying under?*\nStream Two - Small-scale (up to $10,000)\n\nFinancials\n2025-2026 (exc GST): $7,200.00\nTotal funding: $7,200.00\nApproximate percentage: 100%\n\nSummary\n2025-2026 total: $7,200.00\nTotal funding: $7,200.00",
+            "order": 2,
+            "source_pages": [
+              13,
+              18
+            ]
+          },
+          {
+            "id": "activity_description",
+            "header": "Activity/Event Details",
+            "type": "description",
+            "text": "Provide a short title (including location, suburb or school name) of your Application for this activity/event. *\nHobart Elders and Youth Storytelling Day\n\nProvide a brief description of your activity/event and how it meets the objectives of the NAIDOC Local Grants Opportunity. *\nSouthern Coast Cultural Association will hold a free Elders and youth storytelling day in Hobart on 15 August 2026. First Nations cultural practitioners will facilitate storytelling, creative activities and small-group discussions that support respectful intergenerational learning. The association’s First Nations-controlled committee has developed the program with local participants. The activity celebrates First Nations histories and achievements, strengthens cultural expression and promotes broader community understanding.\n\nProposal Start Date *\n15/08/2026\n\nProposal End Date *\n15/08/2026\n\nIn which service area/s is the Applicant proposing to deliver the Project/Activity? *\nHobart\n\nSelected service area/s *\nHobart\n\nDelivery Location\nLocation Name *\nHobart Community Centre (synthetic venue)\n\nPlease input your address *\n5 Example Lane, Hobart TAS 7000",
+            "order": 3,
+            "source_pages": [
+              14,
+              15
+            ]
+          },
+          {
+            "id": "co_contributions",
+            "header": "Co-contributions",
+            "type": "generic",
+            "text": "Co-contributions to the activity / event will include:\n[X] Volunteer time; [X] venue and equipment hire\n\nDetails\nVolunteer time is valued at $1,400 and donated venue use at $900.\n\nCo-contributions (detailed breakdown) *\nNot applicable - detailed table only appears for Stream Three.",
+            "order": 4,
+            "source_pages": [
+              16,
+              17
+            ]
+          },
+          {
+            "id": "budget",
+            "header": "Budget",
+            "type": "budget",
+            "text": "Budget item\tAmount (GST exclusive)\nFirst Nations cultural performers\t$2,500.00\nVenue and event equipment hire\t$1,700.00\nStorytelling facilitators\t$1,800.00\nParticipant activity materials\t$1,200.00\nTotal budget amount\t$7,200.00",
+            "order": 5,
+            "source_pages": [
+              19
+            ]
+          },
+          {
+            "id": "attachments",
+            "header": "Attachments",
+            "type": "generic",
+            "text": "Documentation to verify bank account details. *\nNot provided - no bank-verification document is attached.\n\nAttachments\nBank account verification: Not provided\nAttachment B - Synthetic entity evidence: Confirms the fictional legal entity and entity type recorded for Southern Coast Cultural Association Inc.\nAttachment C - Synthetic recent financial statements: Summary financial statements for Southern Coast Cultural Association Inc. The fictional applicant is financially viable for the proposed activity.\n\nPartnership and Sole Trader Letters of Support\nNot applicable - applicant is neither a Partnership nor a Sole Trader.\n\nNon-Indigenous Applicants\nNot applicable - applicant identifies as a First Nations-controlled organisation.\n\nAssessment Criterion Evidence of Support\nNo optional assessment-criterion evidence attached.",
+            "order": 6,
+            "source_pages": [
+              9,
+              24,
+              25
+            ]
+          }
+        ],
+        "sections": [
+          {
+            "id": "funding_stream",
+            "header": "Activity/Event Details - Funding Stream",
+            "type": "funding_stream",
+            "order": 2,
+            "findings": [],
+            "budget_items": [],
+            "has_threshold_flag": false,
+            "error": null
+          },
+          {
+            "id": "budget",
+            "header": "Budget",
+            "type": "budget",
+            "order": 5,
+            "findings": [],
+            "budget_items": [
+              {
+                "item": "First Nations cultural performers",
+                "amount": "$2,500.00",
+                "classification": "in_scope",
+                "comment": "",
+                "suggested_action": "",
+                "sources": [
+                  {
+                    "document": "Selection Criteria (GOG): NAIDOC 2026 Local Grants Opportunity - Grant Opportunity Guidelines",
+                    "reference": "Section 5.1 Eligible grant activities",
+                    "excerpt": "The type of activities we fund include (but are not limited to):\n▪ arts based activities, including design work, painting, dancing, crafts and storytelling;\n▪ cultural activities, including Welcome to Country;"
+                  }
+                ],
+                "clarification_evidence": null
+              },
+              {
+                "item": "Venue and event equipment hire",
+                "amount": "$1,700.00",
+                "classification": "in_scope",
+                "comment": "",
+                "suggested_action": "",
+                "sources": [
+                  {
+                    "document": "Selection Criteria (GOG): NAIDOC 2026 Local Grants Opportunity - Grant Opportunity Guidelines",
+                    "reference": "Section 5.1 Eligible grant activities",
+                    "excerpt": "You can only use your NAIDOC Local Grant funding for:\n▪ the activity / event itself"
+                  }
+                ],
+                "clarification_evidence": null
+              },
+              {
+                "item": "Storytelling facilitators",
+                "amount": "$1,800.00",
+                "classification": "in_scope",
+                "comment": "",
+                "suggested_action": "",
+                "sources": [
+                  {
+                    "document": "Selection Criteria (GOG): NAIDOC 2026 Local Grants Opportunity - Grant Opportunity Guidelines",
+                    "reference": "Section 5.1 Eligible grant activities",
+                    "excerpt": "The type of activities we fund include (but are not limited to):\n▪ arts based activities, including design work, painting, dancing, crafts and storytelling;"
+                  }
+                ],
+                "clarification_evidence": null
+              },
+              {
+                "item": "Participant activity materials",
+                "amount": "$1,200.00",
+                "classification": "in_scope",
+                "comment": "",
+                "suggested_action": "",
+                "sources": [
+                  {
+                    "document": "Selection Criteria (GOG): NAIDOC 2026 Local Grants Opportunity - Grant Opportunity Guidelines",
+                    "reference": "Section 5.1 Eligible grant activities",
+                    "excerpt": "The type of activities we fund include (but are not limited to):\n▪ arts based activities, including design work, painting, dancing, crafts and storytelling;"
+                  }
+                ],
+                "clarification_evidence": null
+              }
+            ],
+            "has_threshold_flag": false,
+            "error": null
+          },
+          {
+            "id": "attachments",
+            "header": "Attachments",
+            "type": "attachments",
+            "order": 6,
+            "findings": [
+              {
+                "comment": "The mandatory bank account verification evidence is not listed as provided in the submitted package. Under the relevant GOG rule, if a mandatory attachment is not provided, the application \"may be considered non-compliant and may not proceed to assessment\". A human assessor should confirm the package, conduct any appropriate follow-up, and make the final compliance decision.",
+                "suggested_action": "Contact the applicant to request the mandatory bank account verification document, or proceed with the appropriate non-compliance process as outlined in the guidelines.",
+                "sources": [
+                  {
+                    "document": "Selection Criteria (GOG): NAIDOC 2026 Local Grants Opportunity - Grant Opportunity Guidelines",
+                    "reference": "Section 7.1 (page 16)",
+                    "excerpt": "If a mandatory attachment is not provided, your application may be considered non-compliant and may not proceed to assessment."
+                  }
+                ]
+              }
+            ],
+            "budget_items": [],
+            "has_threshold_flag": false,
+            "error": null
+          }
+        ],
+        "threshold_flags": []
+      }
+    },
+    {
+      "id": "application_06",
+      "tab_label": "06 · Clean control",
+      "proposal_filename": "synthetic-application-06.pdf",
+      "model": "gemini-3.5-flash",
+      "captured_at": "2026-07-15T04:18:06+00:00",
+      "duration_seconds": 77.8,
+      "result": {
+        "mode": "assessor",
+        "extracted_sections": [
+          {
+            "id": "eligibility",
+            "header": "Eligibility Requirement",
+            "type": "generic",
+            "text": "Choose the entity type from the list that is relevant to the Applicant. The Applicants Guide provides more information.\nIncorporated association\n\nIs the Applicant able to provide documentation to support the entity type? *\n[X] Yes; [ ] No\n\nPlease provide your supporting documentation. *\nAttachment B - synthetic certificate of incorporation\n\nPermanent resident of Australia? *\nNot applicable - applicant is not a Sole Trader.\n\nCommonwealth agreement compliance*\n[ ] Yes; [X] No\nNo outstanding compliance issues with Commonwealth agreements.",
+            "order": 1,
+            "source_pages": [
+              6,
+              7
+            ]
+          },
+          {
+            "id": "funding_stream",
+            "header": "Which Funding Stream are you applying under?*",
+            "type": "generic",
+            "text": "Stream Two - Small-scale (up to $10,000)",
+            "order": 2,
+            "source_pages": [
+              13
+            ]
+          },
+          {
+            "id": "activity_description",
+            "header": "Provide a brief description of your activity/event and how it meets the objectives of the NAIDOC Local Grants Opportunity. *",
+            "type": "description",
+            "text": "River Plains Community Association will hold a free family cultural arts and storytelling day in Dubbo on 22 August 2026. Two confirmed First Nations cultural facilitators will each lead three storytelling and cultural-learning sessions at $500 per session, totalling $3,000. Other First Nations artists will deliver weaving and visual-art workshops, and a cooking demonstrator will share knowledge through a bush-tucker activity. The First Nations-controlled committee designed the program to strengthen cultural expression, enable intergenerational participation and promote respectful community understanding of First Nations histories, cultures and achievements.",
+            "order": 3,
+            "source_pages": [
+              14
+            ]
+          },
+          {
+            "id": "co_contributions",
+            "header": "Co-contributions *",
+            "type": "generic",
+            "text": "[X] Volunteer time; [X] T-shirts; [X] donations\nVolunteer time is valued at $1,800.\nA local business will donate NAIDOC T-shirts for participants, valued at $1,000.\nNo grant funding is requested for the T-shirts.",
+            "order": 4,
+            "source_pages": [
+              16
+            ]
+          },
+          {
+            "id": "budget",
+            "header": "Budget *",
+            "type": "budget",
+            "text": "Budget item\tAmount (GST exclusive)\nCultural facilitators\t$3,000.00\nFirst Nations weaving and visual-art workshop facilitators\t$2,500.00\nVenue PA and equipment hire\t$1,800.00\nBush-tucker cooking demonstration ingredients and equipment hire\t$1,400.00\nEvent first-aid services\t$700.00\nTotal budget amount\t$9,400.00",
+            "order": 5,
+            "source_pages": [
+              19,
+              20
+            ]
+          },
+          {
+            "id": "attachments",
+            "header": "Attachments",
+            "type": "generic",
+            "text": "Attachment A - Synthetic bank account verification: Statement date: 15 January 2026. Account name: River Plains Community Association Inc. BSB: 000006. Account number: 00000006. Balances and transactions omitted. Synthetic test document.\nAttachment B - Synthetic entity evidence: Confirms the fictional legal entity and entity type recorded for River Plains Community Association Inc.\nAttachment C - Synthetic recent financial statements: Summary financial statements for River Plains Community Association Inc. The fictional applicant is financially viable for the proposed activity.",
+            "order": 6,
+            "source_pages": [
+              25
+            ]
+          }
+        ],
+        "sections": [
+          {
+            "id": "funding_stream",
+            "header": "Which Funding Stream are you applying under?*",
+            "type": "funding_stream",
+            "order": 2,
+            "findings": [],
+            "budget_items": [],
+            "has_threshold_flag": false,
+            "error": null
+          },
+          {
+            "id": "budget",
+            "header": "Budget *",
+            "type": "budget",
+            "order": 5,
+            "findings": [],
+            "budget_items": [
+              {
+                "item": "Cultural facilitators",
+                "amount": "$3,000.00",
+                "classification": "clarified_elsewhere",
+                "comment": "The budget label is short, but the exact breakdown of rates and sessions is provided in the activity description.",
+                "suggested_action": "",
+                "sources": [
+                  {
+                    "document": "Grant Application: synthetic-application-06",
+                    "reference": "Budget",
+                    "excerpt": "Cultural facilitators $3,000.00"
+                  }
+                ],
+                "clarification_evidence": {
+                  "source_section_id": "activity_description",
+                  "source_section": "Provide a brief description of your activity/event and how it meets the objectives of the NAIDOC Local Grants Opportunity. *",
+                  "source_pages": [
+                    14
+                  ],
+                  "excerpt": "Two confirmed First Nations cultural facilitators will each lead three storytelling and cultural-learning sessions at $500 per session, totalling $3,000.",
+                  "basis": "quantity_rate",
+                  "resolved_amount": "$3,000.00"
+                }
+              },
+              {
+                "item": "First Nations weaving and visual-art workshop facilitators",
+                "amount": "$2,500.00",
+                "classification": "in_scope",
+                "comment": "",
+                "suggested_action": "",
+                "sources": [
+                  {
+                    "document": "Grant Application: synthetic-application-06",
+                    "reference": "Budget",
+                    "excerpt": "First Nations weaving and visual-art workshop facilitators $2,500.00"
+                  }
+                ],
+                "clarification_evidence": null
+              },
+              {
+                "item": "Venue PA and equipment hire",
+                "amount": "$1,800.00",
+                "classification": "in_scope",
+                "comment": "",
+                "suggested_action": "",
+                "sources": [
+                  {
+                    "document": "Grant Application: synthetic-application-06",
+                    "reference": "Budget",
+                    "excerpt": "Venue PA and equipment hire $1,800.00"
+                  }
+                ],
+                "clarification_evidence": null
+              },
+              {
+                "item": "Bush-tucker cooking demonstration ingredients and equipment hire",
+                "amount": "$1,400.00",
+                "classification": "in_scope",
+                "comment": "",
+                "suggested_action": "",
+                "sources": [
+                  {
+                    "document": "Grant Application: synthetic-application-06",
+                    "reference": "Budget",
+                    "excerpt": "Bush-tucker cooking demonstration ingredients and equipment hire $1,400.00"
+                  }
+                ],
+                "clarification_evidence": null
+              },
+              {
+                "item": "Event first-aid services",
+                "amount": "$700.00",
+                "classification": "in_scope",
+                "comment": "",
+                "suggested_action": "",
+                "sources": [
+                  {
+                    "document": "Grant Application: synthetic-application-06",
+                    "reference": "Budget",
+                    "excerpt": "Event first-aid services $700.00"
+                  }
+                ],
+                "clarification_evidence": null
+              }
+            ],
+            "has_threshold_flag": false,
+            "error": null
+          },
+          {
+            "id": "attachments",
+            "header": "Attachments",
+            "type": "attachments",
+            "order": 6,
+            "findings": [],
+            "budget_items": [],
+            "has_threshold_flag": false,
+            "error": null
+          }
+        ],
+        "threshold_flags": []
+      }
+    }
+  ]
+}

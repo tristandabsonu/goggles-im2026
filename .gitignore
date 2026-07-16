@@ -1,0 +1,17 @@
+# Local secrets and environments
+.env
+.venv/
+
+# Python-generated files
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Frontend dependencies and logs
+frontend/node_modules/
+npm-debug.log*
+
+# Local human answer key; never publish or send to a model
+demo/naidoc/test-cases/expected-results.md
