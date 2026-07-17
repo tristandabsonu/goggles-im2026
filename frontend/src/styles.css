@@ -100,8 +100,8 @@ main { max-width: 1440px; margin: 0 auto; }
     linear-gradient(90deg, rgba(255, 255, 255, .18), transparent 46%),
     var(--hero-blue);
 }
-.view-tabs { display: grid; grid-template-columns: 1fr 1fr; width: min(720px, 100%); margin: 0 auto; border: 1px solid var(--border); border-radius: 14px; overflow: hidden; box-shadow: 0 8px 24px rgba(9, 45, 74, .08); background: var(--paper); }
-.view-tabs button { text-align: left; padding: 18px 25px; border: 0; background: var(--paper); color: var(--muted); border-bottom: 4px solid transparent; }
+.view-tabs { display: grid; grid-template-columns: 1fr 1fr; width: min(680px, calc(100% - 12px)); margin: 0 auto; border: 1px solid var(--border); border-radius: 14px; overflow: hidden; box-shadow: 0 8px 24px rgba(9, 45, 74, .08); background: var(--paper); }
+.view-tabs button { text-align: left; padding: 15px 22px; border: 0; background: var(--paper); color: var(--muted); border-bottom: 4px solid transparent; }
 .view-tabs button + button { border-left: 1px solid var(--border); }
 .view-tabs button.active { color: var(--forest); border-bottom-color: var(--ochre); background: #fff; }
 .view-tabs button:focus-visible { position: relative; z-index: 1; outline-offset: -4px; }
@@ -564,7 +564,7 @@ footer strong { color: white; margin-right: auto; }
 .site-shell .hero {
   isolation: isolate;
   width: 100%;
-  min-height: clamp(540px, 60vh, 640px);
+  min-height: clamp(500px, 56vh, 580px);
   padding: 0;
   display: block;
   color: var(--ink);
@@ -580,7 +580,7 @@ footer strong { color: white; margin-right: auto; }
   width: min(100%, var(--content-max));
   min-height: inherit;
   margin: 0 auto;
-  padding: clamp(40px, 4vw, 64px) var(--page-gutter) clamp(88px, 8vw, 112px);
+  padding: clamp(40px, 4vw, 64px) var(--page-gutter) clamp(50px, 4.5vw, 67px);
   display: grid;
   grid-template-columns: minmax(0, 1.05fr) minmax(390px, .95fr);
   align-items: center;
@@ -1439,7 +1439,7 @@ footer strong { color: white; margin-right: auto; }
   .hero-inner {
     min-height: auto;
     padding-top: clamp(38px, 5vw, 52px);
-    padding-bottom: clamp(80px, 9vw, 96px);
+    padding-bottom: clamp(48px, 5.4vw, 58px);
     grid-template-columns: minmax(0, 1fr);
     gap: clamp(32px, 5vw, 48px);
   }
@@ -1515,7 +1515,7 @@ footer strong { color: white; margin-right: auto; }
   .example-tab { min-height: 62px; padding: 10px; font-size: 11px; }
   .hero-inner {
     padding-top: 32px;
-    padding-bottom: 72px;
+    padding-bottom: 43px;
     gap: 24px;
   }
   .upload-title-row {
