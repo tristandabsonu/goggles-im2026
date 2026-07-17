@@ -10,17 +10,17 @@ from backend.assessment import (
     assess_budget_section,
     assess_criterion_section,
     assess_funding_stream_section,
-    assess_writer_budget_field,
-    assess_writer_text_field,
+    assess_applicant_budget_field,
+    assess_applicant_text_field,
     extract_assessable_sections,
 )
 from backend.config import load_settings
 from backend.documents import (
     AssessorDocumentBundle,
     PdfDocument,
-    WriterDocumentBundle,
+    ApplicantDocumentBundle,
 )
-from backend.models import ExtractedSection, WriterDraftField
+from backend.models import ExtractedSection, ApplicantDraftField
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 NAIDOC_ROOT = PROJECT_ROOT / "demo" / "naidoc"
@@ -418,9 +418,9 @@ def test_gemini_flags_missing_mandatory_bank_evidence() -> None:
     assert any("7.1" in source.reference for source in finding.sources)
 
 
-def test_gemini_accepts_the_prefilled_isolated_writer_activity() -> None:
+def test_gemini_accepts_the_prefilled_isolated_applicant_activity() -> None:
     settings = load_settings()
-    bundle = WriterDocumentBundle(
+    bundle = ApplicantDocumentBundle(
         gog=PdfDocument("GOG", GOG_PATH.name, GOG_PATH.read_bytes()),
         application_form=PdfDocument(
             "Application Form",
@@ -435,7 +435,7 @@ def test_gemini_accepts_the_prefilled_isolated_writer_activity() -> None:
             ),
         ),
     )
-    field = WriterDraftField(
+    field = ApplicantDraftField(
         id="activity_description",
         header="Activity description and alignment",
         type="description",
@@ -451,15 +451,15 @@ def test_gemini_accepts_the_prefilled_isolated_writer_activity() -> None:
         order=1,
     )
 
-    result = assess_writer_text_field(bundle, field, settings)
+    result = assess_applicant_text_field(bundle, field, settings)
 
     assert result.section_id == "activity_description"
     assert result.findings == []
 
 
-def test_gemini_classifies_default_writer_budget_mix() -> None:
+def test_gemini_classifies_default_applicant_budget_mix() -> None:
     settings = load_settings()
-    bundle = WriterDocumentBundle(
+    bundle = ApplicantDocumentBundle(
         gog=PdfDocument("GOG", GOG_PATH.name, GOG_PATH.read_bytes()),
         application_form=PdfDocument(
             "Application Form",
@@ -474,7 +474,7 @@ def test_gemini_classifies_default_writer_budget_mix() -> None:
             ),
         ),
     )
-    field = WriterDraftField(
+    field = ApplicantDraftField(
         id="budget",
         header="Budget",
         type="budget",
@@ -487,7 +487,7 @@ def test_gemini_classifies_default_writer_budget_mix() -> None:
         order=1,
     )
 
-    result = assess_writer_budget_field(bundle, field, settings)
+    result = assess_applicant_budget_field(bundle, field, settings)
 
     classifications = {item.item: item.classification for item in result.items}
     assert classifications == {
@@ -502,3 +502,39 @@ def test_gemini_classifies_default_writer_budget_mix() -> None:
         for item in result.items
         if item.classification != "in_scope"
     )
+
+
+def test_gemini_flags_missing_bank_evidence_in_applicant_checklist() -> None:
+    settings = load_settings()
+    bundle = ApplicantDocumentBundle(
+        gog=PdfDocument("GOG", GOG_PATH.name, GOG_PATH.read_bytes()),
+        application_form=PdfDocument(
+            "Application Form",
+            APPLICATION_FORM_PATH.name,
+            APPLICATION_FORM_PATH.read_bytes(),
+        ),
+        supporting_documents=(
+            PdfDocument(
+                "Applicants Guide",
+                APPLICANTS_GUIDE_PATH.name,
+                APPLICANTS_GUIDE_PATH.read_bytes(),
+            ),
+        ),
+    )
+    field = ApplicantDraftField(
+        id="attachments",
+        header="Attachment checklist",
+        type="attachments",
+        text="1. support-letter.pdf | Represents: Community letter of support",
+        order=1,
+    )
+
+    result = assess_applicant_text_field(bundle, field, settings)
+
+    assert result.section_id == "attachments"
+    assert len(result.findings) == 1
+    finding = result.findings[0]
+    finding_text = f"{finding.comment} {finding.suggested_action}".lower()
+    assert "bank" in finding_text
+    assert "missing" in finding_text or "not listed" in finding_text
+    assert any("7.1" in source.reference for source in finding.sources)

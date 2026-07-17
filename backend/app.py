@@ -20,18 +20,18 @@ from backend.assessment import (
     SUPPORTED_ASSESSOR_SECTION_IDS,
     extract_assessable_sections,
     iter_assessment_steps,
-    iter_writer_assessment_steps,
+    iter_applicant_assessment_steps,
 )
 from backend.config import Settings, get_settings
 from backend.documents import (
     AssessorDocumentBundle,
     PdfDocument,
     PdfValidationError,
-    WriterDocumentBundle,
+    ApplicantDocumentBundle,
 )
-from backend.models import HealthResponse, WriterDraftField
+from backend.models import HealthResponse, ApplicantDraftField
 
-_WRITER_FIELDS_ADAPTER = TypeAdapter(list[WriterDraftField])
+_APPLICANT_FIELDS_ADAPTER = TypeAdapter(list[ApplicantDraftField])
 _LOGGER = logging.getLogger(__name__)
 _PROJECT_ROOT = Path(__file__).resolve().parents[1]
 _NAIDOC_ROOT = _PROJECT_ROOT / "demo" / "naidoc"
@@ -87,14 +87,14 @@ async def _build_assessor_bundle(
     )
 
 
-async def _build_writer_bundle(
+async def _build_applicant_bundle(
     gog: UploadFile,
     application_form: UploadFile,
     supporting_documents: list[UploadFile] | None,
-) -> WriterDocumentBundle:
+) -> ApplicantDocumentBundle:
     """Build an applicant-facing bundle that cannot contain a proposal."""
 
-    return WriterDocumentBundle(
+    return ApplicantDocumentBundle(
         gog=await _read_pdf(gog, "Selection Criteria (GOG)"),
         application_form=await _read_pdf(application_form, "Application Form"),
         supporting_documents=tuple(
@@ -161,11 +161,11 @@ def _streaming_response(
     )
 
 
-def _validated_writer_fields(fields: str) -> list[WriterDraftField]:
-    """Validate the submitted isolated writer fields for both writer routes."""
+def _validated_applicant_fields(fields: str) -> list[ApplicantDraftField]:
+    """Validate the submitted isolated applicant fields for both applicant routes."""
 
     try:
-        draft_fields = _WRITER_FIELDS_ADAPTER.validate_json(fields)
+        draft_fields = _APPLICANT_FIELDS_ADAPTER.validate_json(fields)
     except ValidationError as exc:
         raise HTTPException(
             status_code=422,
@@ -325,10 +325,10 @@ def create_app(settings: Settings | None = None) -> FastAPI:
         )
 
     @application.post(
-        "/api/writer/check/stream",
-        summary="Check isolated writer fields with live progress",
+        "/api/applicant/check/stream",
+        summary="Check isolated applicant fields with live progress",
     )
-    async def writer_check_stream(
+    async def applicant_check_stream(
         request: Request,
         gog: Annotated[UploadFile, File(description="Selection Criteria (GOG) PDF")],
         application_form: Annotated[
@@ -344,10 +344,10 @@ def create_app(settings: Settings | None = None) -> FastAPI:
             File(description="Optional applicant-facing supporting PDFs"),
         ] = None,
     ) -> StreamingResponse:
-        """Stream one real progress stage for each submitted writer field."""
+        """Stream one real progress stage for each submitted applicant field."""
 
-        draft_fields = _validated_writer_fields(fields)
-        bundle = await _build_writer_bundle(
+        draft_fields = _validated_applicant_fields(fields)
+        bundle = await _build_applicant_bundle(
             gog,
             application_form,
             supporting_documents,
@@ -368,7 +368,7 @@ def create_app(settings: Settings | None = None) -> FastAPI:
                         ],
                     }
                 )
-                steps = iter_writer_assessment_steps(bundle, draft_fields, settings)
+                steps = iter_applicant_assessment_steps(bundle, draft_fields, settings)
                 while not stop_requested.is_set():
                     try:
                         field, current, total = next(steps)
@@ -397,7 +397,7 @@ def create_app(settings: Settings | None = None) -> FastAPI:
                     }
                 )
             except Exception as exc:
-                _LOGGER.exception("Streamed writer check failed")
+                _LOGGER.exception("Streamed applicant check failed")
                 event_queue.put(_stream_error_event(exc))
             finally:
                 event_queue.put(_STREAM_COMPLETE)
@@ -406,7 +406,7 @@ def create_app(settings: Settings | None = None) -> FastAPI:
             run_check=run_check,
             event_queue=event_queue,
             stop_requested=stop_requested,
-            thread_name="writer-progress",
+            thread_name="applicant-progress",
         )
 
     frontend_dist = _PROJECT_ROOT / "frontend/dist"

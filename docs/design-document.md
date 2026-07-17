@@ -5,11 +5,11 @@
 1. GOGgles provides comments and recommendations, never official decisions.
 2. A person verifies sources, writes every change and retains responsibility.
 3. Actionable findings are grounded in structured document references.
-4. Writer fields are assessed independently; other draft answers are excluded.
+4. Applicant fields are assessed independently; other draft answers are excluded.
 5. Assessor mode may use the complete proposal for cross-section context.
 6. A check never blocks submission or automatically rejects an application.
-6. Documents are processed in memory and discarded after the request.
-7. Only the NAIDOC dataset and named checks are claimed as validated.
+7. Documents are processed in memory and discarded after the request.
+8. Only the NAIDOC dataset and named checks are claimed as validated.
 
 ## Architecture
 
@@ -48,16 +48,22 @@ Supported IDs are:
 Other extracted fields are displayed transparently as unassessed fields. One
 failed section becomes a section-level error without hiding successful results.
 
-### Writer workflow
+### Applicant workflow
 
-The Writer view already knows its form fields, so it does not run extraction.
+The Applicant view already knows its form fields, so it does not run extraction.
 Each marked answer is sent in a separate Gemini call with only the applicant-
-facing GOG, Application Form and supporting documents. The Writer bundle has no
+facing GOG, Application Form and supporting documents. The Applicant bundle has no
 submitted-proposal slot.
 
 The backend orders the fields, checks them sequentially and returns feedback by
 field ID. An unexpected `clarified_elsewhere` budget classification is always
 changed to `vague`, and all clarification evidence is removed before return.
+
+The attachment checklist is another isolated field. It sends only the names and
+descriptions the applicant lists and checks that manifest against mandatory
+requirements. It does not upload, open, authenticate or verify the contents of
+an attachment, and it cannot infer conditional requirements from another draft
+answer.
 
 ### Result safeguards
 
@@ -77,7 +83,7 @@ changed to `vague`, and all clarification evidence is removed before return.
 The working model endpoints are streamed form uploads:
 
 - `POST /api/assessor/check/stream`
-- `POST /api/writer/check/stream`
+- `POST /api/applicant/check/stream`
 
 The demo-file route uses an explicit allow-list for public source PDFs and six
 synthetic proposals. `/health` returns the service health status. FastAPI serves
@@ -85,17 +91,26 @@ the compiled React build and direct client routes.
 
 The interface has four routes:
 
-- `/` — Human Markup introduction plus the working Assessor and Writer views;
+- `/` — Human Markup introduction plus the working Assessor and Applicant views;
 - `/how-it-works` — problem, process, limitations and production direction;
 - `/example-results` — six captured Gemini checks rendered through the live
   result component without another model call.
 - `/for-devs` — compact model, workflow and architecture rationale linked only
   from beneath the How-it-works workflow diagram.
 
-Assessor and Writer inputs clear feedback that no longer matches the current
+Assessor and Applicant inputs clear feedback that no longer matches the current
 input. Mutable controls are locked while a check is running; non-mutating PDF
 previews remain available. On narrow screens, budget results use stacked cards
 instead of a horizontally scrolling table.
+
+Applicant view shows the exact three preloaded NAIDOC source documents in a
+read-only strip above the form. Each can be previewed through the allow-listed
+demo-file route, and the same files are attached to every Applicant check; the
+view does not offer replacement or upload controls for them.
+
+The homepage hero follows the selected perspective. Applicant retains the
+paperwork-focused headline and draft guidance, while Assessor uses the
+judgement-focused headline and submitted-proposal explanation.
 
 Captured examples are structured output from synthetic proposals, not invented
 findings or the private answer key. The UI states that fresh model results can
@@ -104,7 +119,7 @@ vary and require human verification.
 ## Data and verification
 
 `demo/naidoc/` contains the retained public program PDFs, synthetic application
-sources and PDFs, the private expected-results rubric, a Writer smoke fixture
+sources and PDFs, the private expected-results rubric, an Applicant smoke fixture
 and the scripts that regenerate fixtures or captured examples. See its local
 README before changing those files.
 
@@ -115,7 +130,9 @@ commands in the root `README.md`; do not record volatile pass counts here.
 
 ## Known limitations
 
-- Only the named Assessor paths and marked Writer fields are implemented.
+- Only the named Assessor paths and marked Applicant fields are implemented.
+- Applicant attachment feedback checks listed metadata only; it does not inspect
+  or verify attachment files.
 - General rule citations are model output and are not independently matched
   against PDF text. Cross-section clarification has only the narrow local gate
   described above.
@@ -141,5 +158,5 @@ persistent worker service, disk or separate frontend service.
 
 Deployment requires explicit authorisation. Minimum release verification is the
 health route, frontend routes and assets, an allowed demo PDF, a 404 for the
-private rubric, then one known Assessor scenario and one Writer scenario with
+private rubric, then one known Assessor scenario and one Applicant scenario with
 separate API-credit authorisation.

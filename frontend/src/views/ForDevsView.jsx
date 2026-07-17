@@ -75,11 +75,13 @@ export default function ForDevsView() {
                 hiding the other results and let the interface show real progress.
               </p>
               <p>
-                Writer mode skips extraction because the interface already knows
+                Applicant mode skips extraction because the interface already knows
                 its fields. Each draft field being checked is sent separately with
                 only the applicant-facing guidance documents. Other draft answers
                 are excluded by request construction, so one field cannot silently
-                fill a gap in another.
+                fill a gap in another. The attachment checklist is sent only as
+                listed names and descriptions; no attachment file is uploaded or
+                inspected.
               </p>
             </div>
           </article>

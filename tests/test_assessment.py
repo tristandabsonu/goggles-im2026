@@ -10,16 +10,16 @@ from backend.assessment import (
     assess_budget_section,
     assess_criterion_section,
     assess_funding_stream_section,
-    assess_writer_budget_field,
-    assess_writer_text_field,
+    assess_applicant_budget_field,
+    assess_applicant_text_field,
     extract_assessable_sections,
-    iter_writer_assessment_steps,
+    iter_applicant_assessment_steps,
 )
 from backend.config import Settings
 from backend.documents import (
     AssessorDocumentBundle,
     PdfDocument,
-    WriterDocumentBundle,
+    ApplicantDocumentBundle,
 )
 from backend.models import (
     AssessmentFinding,
@@ -33,8 +33,8 @@ from backend.models import (
     SectionExtractionResult,
     SourceReference,
     ThresholdFlag,
-    WriterDraftField,
-    WriterFieldAssessmentResult,
+    ApplicantDraftField,
+    ApplicantFieldAssessmentResult,
 )
 
 
@@ -53,14 +53,14 @@ class FakeMessages:
 
 
 class InvalidJsonThenValidMessages:
-    def __init__(self, parsed_output: WriterFieldAssessmentResult) -> None:
+    def __init__(self, parsed_output: ApplicantFieldAssessmentResult) -> None:
         self.parsed_output = parsed_output
         self.requests: list[dict[str, Any]] = []
 
     def generate_content(self, **kwargs: Any) -> SimpleNamespace:
         self.requests.append(kwargs)
         if len(self.requests) == 1:
-            WriterFieldAssessmentResult.model_validate_json(
+            ApplicantFieldAssessmentResult.model_validate_json(
                 '{"section_id":"activity_description","findings":[{"comment":"cut'
             )
         return SimpleNamespace(
@@ -420,13 +420,13 @@ def test_unreconciled_budget_clarification_is_downgraded_to_vague() -> None:
     assert item.clarification_evidence is None
 
 
-def test_writer_budget_call_keeps_a_stable_applicant_facing_prefix() -> None:
+def test_applicant_budget_call_keeps_a_stable_applicant_facing_prefix() -> None:
     settings = Settings(
         gemini_api_key="test-key",
         gemini_model="gemini-test",
         _env_file=None,
     )
-    bundle = WriterDocumentBundle(
+    bundle = ApplicantDocumentBundle(
         gog=PdfDocument("GOG", "gog.pdf", b"%PDF-1.7\ngog"),
         application_form=PdfDocument(
             "Application Form",
@@ -435,7 +435,7 @@ def test_writer_budget_call_keeps_a_stable_applicant_facing_prefix() -> None:
         ),
         supporting_documents=(PdfDocument("Guide", "guide.pdf", b"%PDF-1.7\nguide"),),
     )
-    field = WriterDraftField(
+    field = ApplicantDraftField(
         id="budget",
         header="Budget",
         type="budget",
@@ -445,7 +445,7 @@ def test_writer_budget_call_keeps_a_stable_applicant_facing_prefix() -> None:
     messages = FakeMessages(BudgetAssessmentResult(section_id="budget", items=[]))
     client = SimpleNamespace(models=messages)
 
-    assess_writer_budget_field(
+    assess_applicant_budget_field(
         bundle,
         field,
         settings,
@@ -755,13 +755,13 @@ def test_combined_assessment_preserves_order_and_threshold_flags(
     assert funding_result.has_threshold_flag is True
 
 
-def test_writer_budget_call_contains_only_applicant_sources_and_target_field() -> None:
+def test_applicant_budget_call_contains_only_applicant_sources_and_target_field() -> None:
     settings = Settings(
         gemini_api_key="test-key",
         gemini_model="gemini-test",
         _env_file=None,
     )
-    bundle = WriterDocumentBundle(
+    bundle = ApplicantDocumentBundle(
         gog=PdfDocument("GOG", "gog.pdf", b"%PDF-1.7\ngog"),
         application_form=PdfDocument(
             "Application Form",
@@ -770,7 +770,7 @@ def test_writer_budget_call_contains_only_applicant_sources_and_target_field() -
         ),
         supporting_documents=(PdfDocument("Guide", "guide.pdf", b"%PDF-1.7\nguide"),),
     )
-    field = WriterDraftField(
+    field = ApplicantDraftField(
         id="budget",
         header="Budget",
         type="budget",
@@ -793,7 +793,7 @@ def test_writer_budget_call_contains_only_applicant_sources_and_target_field() -
     messages = FakeMessages(assessed)
     client = SimpleNamespace(models=messages)
 
-    result = assess_writer_budget_field(
+    result = assess_applicant_budget_field(
         bundle,
         field,
         settings,
@@ -815,13 +815,13 @@ def test_writer_budget_call_contains_only_applicant_sources_and_target_field() -
     )
 
 
-def test_writer_budget_clarification_is_downgraded_and_evidence_removed() -> None:
+def test_applicant_budget_clarification_is_downgraded_and_evidence_removed() -> None:
     settings = Settings(
         gemini_api_key="test-key",
         gemini_model="gemini-test",
         _env_file=None,
     )
-    bundle = WriterDocumentBundle(
+    bundle = ApplicantDocumentBundle(
         gog=PdfDocument("GOG", "gog.pdf", b"%PDF-1.7\ngog"),
         application_form=PdfDocument(
             "Application Form",
@@ -830,7 +830,7 @@ def test_writer_budget_clarification_is_downgraded_and_evidence_removed() -> Non
         ),
         supporting_documents=(),
     )
-    field = WriterDraftField(
+    field = ApplicantDraftField(
         id="budget",
         header="Budget",
         type="budget",
@@ -859,7 +859,7 @@ def test_writer_budget_clarification_is_downgraded_and_evidence_removed() -> Non
         ],
     )
 
-    result = assess_writer_budget_field(
+    result = assess_applicant_budget_field(
         bundle,
         field,
         settings,
@@ -873,13 +873,13 @@ def test_writer_budget_clarification_is_downgraded_and_evidence_removed() -> Non
     assert item.clarification_evidence is None
 
 
-def test_writer_budget_removes_stray_clarification_evidence() -> None:
+def test_applicant_budget_removes_stray_clarification_evidence() -> None:
     settings = Settings(
         gemini_api_key="test-key",
         gemini_model="gemini-test",
         _env_file=None,
     )
-    bundle = WriterDocumentBundle(
+    bundle = ApplicantDocumentBundle(
         gog=PdfDocument("GOG", "gog.pdf", b"%PDF-1.7\ngog"),
         application_form=PdfDocument(
             "Application Form",
@@ -888,7 +888,7 @@ def test_writer_budget_removes_stray_clarification_evidence() -> None:
         ),
         supporting_documents=(),
     )
-    field = WriterDraftField(
+    field = ApplicantDraftField(
         id="budget",
         header="Budget",
         type="budget",
@@ -917,7 +917,7 @@ def test_writer_budget_removes_stray_clarification_evidence() -> None:
         ],
     )
 
-    result = assess_writer_budget_field(
+    result = assess_applicant_budget_field(
         bundle,
         field,
         settings,
@@ -929,13 +929,13 @@ def test_writer_budget_removes_stray_clarification_evidence() -> None:
     assert item.clarification_evidence is None
 
 
-def test_writer_description_call_is_isolated_and_uses_grounded_feedback() -> None:
+def test_applicant_description_call_is_isolated_and_uses_grounded_feedback() -> None:
     settings = Settings(
         gemini_api_key="test-key",
         gemini_model="gemini-test",
         _env_file=None,
     )
-    bundle = WriterDocumentBundle(
+    bundle = ApplicantDocumentBundle(
         gog=PdfDocument("GOG", "gog.pdf", b"%PDF-1.7\ngog"),
         application_form=PdfDocument(
             "Application Form",
@@ -944,14 +944,14 @@ def test_writer_description_call_is_isolated_and_uses_grounded_feedback() -> Non
         ),
         supporting_documents=(PdfDocument("Guide", "guide.pdf", b"%PDF-1.7\nguide"),),
     )
-    field = WriterDraftField(
+    field = ApplicantDraftField(
         id="activity_description",
         header="Activity description and alignment",
         type="description",
         text="We will hold a community event.",
         order=1,
     )
-    assessed = WriterFieldAssessmentResult(
+    assessed = ApplicantFieldAssessmentResult(
         section_id="activity_description",
         findings=[
             AssessmentFinding(
@@ -970,7 +970,7 @@ def test_writer_description_call_is_isolated_and_uses_grounded_feedback() -> Non
     messages = FakeMessages(assessed)
     client = SimpleNamespace(models=messages)
 
-    result = assess_writer_text_field(
+    result = assess_applicant_text_field(
         bundle,
         field,
         settings,
@@ -979,7 +979,7 @@ def test_writer_description_call_is_isolated_and_uses_grounded_feedback() -> Non
 
     assert result.findings[0].suggested_action.startswith("Explain how")
     assert messages.request is not None
-    assert messages.request["config"].response_schema is WriterFieldAssessmentResult
+    assert messages.request["config"].response_schema is ApplicantFieldAssessmentResult
     content = messages.request["contents"]
     assert _document_labels(content) == [
         "GOG: gog",
@@ -993,13 +993,73 @@ def test_writer_description_call_is_isolated_and_uses_grounded_feedback() -> Non
     )
 
 
-def test_writer_steps_combine_text_and_budget_feedback(monkeypatch) -> None:
+def test_applicant_attachment_call_checks_only_the_listed_manifest() -> None:
     settings = Settings(
         gemini_api_key="test-key",
         gemini_model="gemini-test",
         _env_file=None,
     )
-    bundle = WriterDocumentBundle(
+    bundle = ApplicantDocumentBundle(
+        gog=PdfDocument("GOG", "gog.pdf", b"%PDF-1.7\ngog"),
+        application_form=PdfDocument(
+            "Application Form",
+            "form.pdf",
+            b"%PDF-1.7\nform",
+        ),
+        supporting_documents=(PdfDocument("Guide", "guide.pdf", b"%PDF-1.7\nguide"),),
+    )
+    field = ApplicantDraftField(
+        id="attachments",
+        header="Attachment checklist",
+        type="attachments",
+        text="1. support-letter.pdf | Represents: Community letter of support",
+        order=3,
+    )
+    assessed = ApplicantFieldAssessmentResult(
+        section_id="attachments",
+        findings=[
+            AssessmentFinding(
+                comment="Bank-account verification is not listed.",
+                suggested_action="Confirm that the intended package includes it.",
+                sources=[_source("section 7.1")],
+            )
+        ],
+    )
+    messages = FakeMessages(assessed)
+
+    result = assess_applicant_text_field(
+        bundle,
+        field,
+        settings,
+        client=SimpleNamespace(models=messages),  # type: ignore[arg-type]
+    )
+
+    assert result.section_id == "attachments"
+    assert messages.request is not None
+    assert messages.request["config"].response_schema is ApplicantFieldAssessmentResult
+    content = messages.request["contents"]
+    assert _document_labels(content) == [
+        "GOG: gog",
+        "Application Form: form",
+        "Guide: guide",
+    ]
+    prompt = _part_text(content[-1])
+    assert "support-letter.pdf" in prompt
+    assert "No other applicant answer" in prompt
+    assert "attachment file is available" in prompt
+    assert "Do not claim to have" in prompt
+    assert "opened, authenticated or verified" in prompt
+
+
+def test_applicant_steps_combine_text_attachment_and_budget_feedback(
+    monkeypatch,
+) -> None:
+    settings = Settings(
+        gemini_api_key="test-key",
+        gemini_model="gemini-test",
+        _env_file=None,
+    )
+    bundle = ApplicantDocumentBundle(
         gog=PdfDocument("GOG", "gog.pdf", b"%PDF-1.7\ngog"),
         application_form=PdfDocument(
             "Application Form",
@@ -1009,26 +1069,33 @@ def test_writer_steps_combine_text_and_budget_feedback(monkeypatch) -> None:
         supporting_documents=(),
     )
     fields = [
-        WriterDraftField(
+        ApplicantDraftField(
             id="budget",
             header="Budget",
             type="budget",
             text="Other: $1,000",
             order=2,
         ),
-        WriterDraftField(
+        ApplicantDraftField(
             id="activity_description",
             header="Activity description and alignment",
             type="description",
             text="We will hold a community event.",
             order=1,
         ),
+        ApplicantDraftField(
+            id="attachments",
+            header="Attachment checklist",
+            type="attachments",
+            text="No attachments listed.",
+            order=3,
+        ),
     ]
     called = []
 
     def fake_text(bundle, field, settings):
         called.append(field.id)
-        return WriterFieldAssessmentResult(
+        return ApplicantFieldAssessmentResult(
             section_id=field.id,
             findings=[
                 AssessmentFinding(
@@ -1055,10 +1122,10 @@ def test_writer_steps_combine_text_and_budget_feedback(monkeypatch) -> None:
             ],
         )
 
-    monkeypatch.setattr("backend.assessment.assess_writer_text_field", fake_text)
-    monkeypatch.setattr("backend.assessment.assess_writer_budget_field", fake_budget)
+    monkeypatch.setattr("backend.assessment.assess_applicant_text_field", fake_text)
+    monkeypatch.setattr("backend.assessment.assess_applicant_budget_field", fake_budget)
 
-    steps = iter_writer_assessment_steps(bundle, fields, settings)
+    steps = iter_applicant_assessment_steps(bundle, fields, settings)
     progress = []
     while True:
         try:
@@ -1068,26 +1135,29 @@ def test_writer_steps_combine_text_and_budget_feedback(monkeypatch) -> None:
             result = completed.value
             break
 
-    assert called == ["activity_description", "budget"]
+    assert called == ["activity_description", "budget", "attachments"]
     assert progress == [
-        ("activity_description", 1, 2),
-        ("budget", 2, 2),
+        ("activity_description", 1, 3),
+        ("budget", 2, 3),
+        ("attachments", 3, 3),
     ]
     assert [section.id for section in result.sections] == [
         "activity_description",
         "budget",
+        "attachments",
     ]
     assert result.sections[0].findings
     assert result.sections[1].budget_items[0].classification == "vague"
+    assert result.sections[2].type == "attachments"
 
 
-def test_writer_text_field_retries_once_after_invalid_structured_json() -> None:
+def test_applicant_text_field_retries_once_after_invalid_structured_json() -> None:
     settings = Settings(
         gemini_api_key="test-key",
         gemini_model="gemini-test",
         _env_file=None,
     )
-    bundle = WriterDocumentBundle(
+    bundle = ApplicantDocumentBundle(
         gog=PdfDocument("GOG", "gog.pdf", b"%PDF-1.7\ngog"),
         application_form=PdfDocument(
             "Application Form",
@@ -1096,7 +1166,7 @@ def test_writer_text_field_retries_once_after_invalid_structured_json() -> None:
         ),
         supporting_documents=(),
     )
-    field = WriterDraftField(
+    field = ApplicantDraftField(
         id="activity_description",
         header="Activity description and alignment",
         type="description",
@@ -1104,14 +1174,14 @@ def test_writer_text_field_retries_once_after_invalid_structured_json() -> None:
         order=1,
     )
     messages = InvalidJsonThenValidMessages(
-        WriterFieldAssessmentResult(
+        ApplicantFieldAssessmentResult(
             section_id="activity_description",
             findings=[],
         )
     )
     client = SimpleNamespace(models=messages)
 
-    result = assess_writer_text_field(
+    result = assess_applicant_text_field(
         bundle,
         field,
         settings,

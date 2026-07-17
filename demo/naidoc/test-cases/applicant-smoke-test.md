@@ -1,8 +1,8 @@
-# Writer-view smoke test - isolated budget field
+# Applicant-view smoke test - isolated budget field
 
 > **SYNTHETIC TEST INPUT - NOT AN OFFICIAL SUBMISSION**
 
-Only this budget field is supplied to the writer-view assessment call. No other draft fields are in context.
+Only this budget field is supplied to the applicant-view assessment call. No other draft fields are in context.
 
 ## Application Form instructions
 

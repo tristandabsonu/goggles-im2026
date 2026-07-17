@@ -5,7 +5,7 @@ import AssessorView from "./views/AssessorView";
 import ExampleResultsView from "./views/ExampleResultsView";
 import ForDevsView from "./views/ForDevsView";
 import HowItWorksView from "./views/HowItWorksView";
-import WriterView from "./views/WriterView";
+import ApplicantView from "./views/ApplicantView";
 
 function HeroArt() {
   return (
@@ -155,7 +155,7 @@ function SiteFooter() {
 }
 
 function HomePage() {
-  const [view, setView] = useState("assessor");
+  const [view, setView] = useState("applicant");
 
   useEffect(() => {
     if (window.location.hash !== "#try-it-now") return;
@@ -168,18 +168,61 @@ function HomePage() {
     <div className="site-shell">
       <SiteHeader activePage="home" />
       <main id="main-content" tabIndex={-1}>
+        <div className="view-switcher">
+          <div
+            className="view-tabs"
+            role="group"
+            aria-label="Choose a GOGgles view"
+          >
+            <button
+              type="button"
+              className={view === "applicant" ? "active" : ""}
+              aria-pressed={view === "applicant"}
+              onClick={() => setView("applicant")}
+            >
+              <span>Applicant</span>
+              <small>Build and check a draft</small>
+            </button>
+            <button
+              type="button"
+              className={view === "assessor" ? "active" : ""}
+              aria-pressed={view === "assessor"}
+              onClick={() => setView("assessor")}
+            >
+              <span>Assessor</span>
+              <small>Review a submitted grant proposal</small>
+            </button>
+          </div>
+        </div>
         <section className="hero">
           <div className="hero-inner">
             <div className="hero-copy">
               <span className="eyebrow">
                 Grant guidance, with the source in sight
               </span>
-              <h1>Good work shouldn't lose on the paperwork.</h1>
-              <p>
-                GOGgles checks a grant application against its supplied
-                guidelines, shows the relevant source and suggests what a
-                person should address.
-              </p>
+              {view === "applicant" ? (
+                <>
+                  <h1>Good work shouldn't lose on the paperwork.</h1>
+                  <p>
+                    GOGgles checks selected draft answers against the supplied
+                    grant guidance, shows the relevant source and suggests what
+                    you could address. You remain the author and decide what to
+                    change.
+                  </p>
+                </>
+              ) : (
+                <>
+                  <h1>
+                    Put judgement back at the centre of grant assessment.
+                  </h1>
+                  <p>
+                    GOGgles finds supported mechanical issues in a submitted
+                    proposal and shows the relevant sources, so assessors can
+                    focus on merit, evidence and local context. Every judgement
+                    remains with a person.
+                  </p>
+                </>
+              )}
               <div className="hero-actions">
                 <a className="hero-cta" href="/how-it-works">
                   See how it works
@@ -196,29 +239,13 @@ function HomePage() {
             <HeroArt />
           </div>
         </section>
-        <nav
+        <section
           id="try-it-now"
-          className="view-tabs"
-          aria-label="Choose a GOGgles view"
+          className="working-view"
+          aria-label={`${view === "assessor" ? "Assessor" : "Applicant"} view`}
         >
-          <button
-            className={view === "assessor" ? "active" : ""}
-            aria-pressed={view === "assessor"}
-            onClick={() => setView("assessor")}
-          >
-            <span>Assessor</span>
-            <small>Review a submitted grant proposal</small>
-          </button>
-          <button
-            className={view === "writer" ? "active" : ""}
-            aria-pressed={view === "writer"}
-            onClick={() => setView("writer")}
-          >
-            <span>Writer</span>
-            <small>Build and check a draft</small>
-          </button>
-        </nav>
-        {view === "assessor" ? <AssessorView /> : <WriterView />}
+          {view === "assessor" ? <AssessorView /> : <ApplicantView />}
+        </section>
       </main>
       <SiteFooter />
     </div>

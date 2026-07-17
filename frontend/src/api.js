@@ -75,6 +75,6 @@ export function checkAssessor(formData, onProgress = () => {}) {
   return postProgressForm("/api/assessor/check/stream", formData, onProgress);
 }
 
-export function checkWriter(formData, onProgress = () => {}) {
-  return postProgressForm("/api/writer/check/stream", formData, onProgress);
+export function checkApplicant(formData, onProgress = () => {}) {
+  return postProgressForm("/api/applicant/check/stream", formData, onProgress);
 }

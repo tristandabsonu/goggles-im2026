@@ -34,7 +34,7 @@ numbers from the submitted Grant Application and preserve application order.
 
 
 BUDGET_ASSESSMENT_PROMPT = """
-You are assisting a human grant writer or assessor. Assess only the target
+You are assisting a human grant applicant or assessor. Assess only the target
 requested-grant Budget section supplied below. Do not make an eligibility,
 funding or rejection decision.
 
@@ -195,7 +195,7 @@ Target extracted attachment manifest:
 """.strip()
 
 
-WRITER_BUDGET_ASSESSMENT_PROMPT = """
+APPLICANT_BUDGET_ASSESSMENT_PROMPT = """
 You are assisting an applicant to check one isolated draft Budget field. Assess
 only the target field below. No other applicant draft field is available, and you
 must not infer or invent information from an activity description or elsewhere.
@@ -221,7 +221,7 @@ Return every requested-grant line item except the total and classify it as:
 - vague: the label does not identify the purpose or components well enough to
   assess it from this field alone.
 
-Never use clarified_elsewhere in writer mode. A generic label such as "Other" is
+Never use clarified_elsewhere in applicant mode. A generic label such as "Other" is
 vague, not evidence of an excluded cost. For each vague item, explain what detail
 the applicant should add or itemise without drafting replacement application
 content. For an in-scope item with no action required, use empty strings for
@@ -229,14 +229,56 @@ comment and suggested_action. Give concise source references for every negative
 classification, using exact document names and real clause, section or form-
 instruction references from the supplied PDFs.
 
-Set clarification_evidence to null for every writer-mode item.
+Set clarification_evidence to null for every applicant-mode item.
 
-Target isolated writer budget field:
+Target isolated applicant budget field:
 {budget_text}
 """.strip()
 
 
-WRITER_DESCRIPTION_ASSESSMENT_PROMPT = """
+APPLICANT_ATTACHMENT_ASSESSMENT_PROMPT = """
+You are assisting an applicant to check one isolated attachment checklist before
+submission. Assess only the target checklist below. No other applicant answer or
+attachment file is available. Do not make an eligibility, compliance, funding,
+assessment or rejection decision.
+
+The labelled PDFs contain the applicant-facing GOG, Application Form and allowed
+supporting documents. Treat the GOG as the main rule source. Compare only the
+attachment names and descriptions that the applicant has listed with the
+mandatory attachment requirements in those documents.
+
+This is a manifest check, not a document-content check. Do not claim to have
+opened, authenticated or verified a listed attachment. Do not infer whether a
+bank statement is recent, whether an account belongs to the applicant or whether
+any listed file contains valid evidence. A clearly labelled bank statement or
+bank letter counts only as bank-account verification being listed.
+
+Set section_id to "attachments".
+
+Return one concise finding when the checklist does not clearly list the
+universally required bank-account verification. Explain what appears to be
+missing and ask the applicant to confirm that the intended package includes the
+required evidence. Cite the exact GOG attachment section and relevant Application
+Form instruction.
+
+Some attachment requirements apply only to particular applicant circumstances,
+such as trusts, applicants without an ABN, consortiums or certain applicants
+without an existing grant agreement. Because no other draft field is available,
+do not assert that a conditional attachment is missing unless the checklist
+itself explicitly makes that condition applicable. Do not draft application
+content or state that the application will be rejected.
+
+Return no findings when the checklist clearly lists bank-account verification
+and does not itself reveal another applicable mandatory attachment as missing.
+Keep each comment and suggested action to two short sentences, use at most two
+sources per finding, and keep each source excerpt under 40 words.
+
+Target isolated applicant attachment checklist:
+{attachments_text}
+""".strip()
+
+
+APPLICANT_DESCRIPTION_ASSESSMENT_PROMPT = """
 You are assisting an applicant to check one isolated draft activity-description
 field. Assess only the target field below. No other applicant draft field is
 available, and you must not infer or invent information from organisation
@@ -268,12 +310,12 @@ Return at most three findings. Keep each comment and suggested action to two
 short sentences, use at most two sources per finding, and keep each source
 excerpt under 40 words.
 
-Target isolated writer activity-description field:
+Target isolated applicant activity-description field:
 {field_text}
 """.strip()
 
 
-WRITER_CRITERION_ASSESSMENT_PROMPT = """
+APPLICANT_CRITERION_ASSESSMENT_PROMPT = """
 You are assisting an applicant to check one isolated draft Stream Three
 criterion response. Assess only the target field below. No activity description,
 budget, co-contribution answer or other applicant draft field is available, and
@@ -298,6 +340,6 @@ Return at most three findings. Keep each comment and suggested action to two
 short sentences, use at most two sources per finding, and keep each source
 excerpt under 40 words.
 
-Target isolated writer Stream Three criterion field:
+Target isolated applicant Stream Three criterion field:
 {field_text}
 """.strip()

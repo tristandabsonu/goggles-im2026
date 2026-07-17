@@ -42,7 +42,7 @@ class AssessorDocumentBundle:
 
 
 @dataclass(frozen=True, slots=True)
-class WriterDocumentBundle:
+class ApplicantDocumentBundle:
     """Applicant-facing source documents, with no submitted application."""
 
     gog: PdfDocument

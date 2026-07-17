@@ -1,7 +1,8 @@
 import { useMemo, useRef, useState } from "react";
 
-import { checkWriter, fetchDemoFile } from "../api";
+import { checkApplicant, fetchDemoFile } from "../api";
 import AssessmentProgress from "../components/AssessmentProgress";
+import { PreviewModal } from "../components/Documents";
 import {
   ClarificationEvidence,
   ClassificationBadge,
@@ -19,7 +20,36 @@ const DEFAULT_ROWS = [
   { item: "NAIDOC T-shirts for participants", amount: "1000" },
 ];
 
-const DEFAULT_WRITER_DRAFT = {
+const DEFAULT_ATTACHMENT_ROWS = [
+  {
+    name: "Bank statement - January 2026.pdf",
+    represents: "Evidence of the organisation's bank account",
+  },
+  {
+    name: "2025 financial statements.pdf",
+    represents: "The organisation's most recent financial statements",
+  },
+];
+
+const GUIDANCE_DOCUMENTS = [
+  {
+    kind: "Selection Criteria (GOG)",
+    name: "NAIDOC 2026 Local Grants Opportunity - Grant Opportunity Guidelines.pdf",
+    key: "gog",
+  },
+  {
+    kind: "Application Form",
+    name: "NAIDOC 2026 - Sample Application Form.pdf",
+    key: "application_form",
+  },
+  {
+    kind: "Applicants Guide",
+    name: "NAIDOC 2026 Local Grants - Applicants Guide.pdf",
+    key: "applicants_guide",
+  },
+];
+
+const DEFAULT_APPLICANT_DRAFT = {
   legalName: "River Plains Community Association Inc",
   tradingName: "River Plains Community Association",
   abn: "00 000 000 000",
@@ -40,7 +70,7 @@ const DEFAULT_WRITER_DRAFT = {
   criterion1: "",
 };
 
-function WriterFieldFeedback({ section }) {
+function ApplicantFieldFeedback({ section }) {
   if (!section) return <p className="awaiting">Not checked yet</p>;
   if (section.error) {
     return <div className="error-box compact-error">{section.error}</div>;
@@ -102,9 +132,12 @@ function matchBudgetFeedback(rows, items) {
   return feedback;
 }
 
-export default function WriterView() {
-  const [draft, setDraft] = useState(DEFAULT_WRITER_DRAFT);
+export default function ApplicantView() {
+  const [draft, setDraft] = useState(DEFAULT_APPLICANT_DRAFT);
   const [rows, setRows] = useState(DEFAULT_ROWS);
+  const [attachmentRows, setAttachmentRows] = useState(
+    DEFAULT_ATTACHMENT_ROWS,
+  );
   const [result, setResult] = useState(null);
   const [loading, setLoading] = useState(false);
   const [progress, setProgress] = useState({
@@ -113,6 +146,7 @@ export default function WriterView() {
     current: 0,
   });
   const [error, setError] = useState("");
+  const [preview, setPreview] = useState(null);
   const checkInFlight = useRef(false);
   const sections = useMemo(
     () =>
@@ -132,7 +166,7 @@ export default function WriterView() {
     [rows],
   );
 
-  function mutateWriterInput(mutation) {
+  function mutateApplicantInput(mutation) {
     if (checkInFlight.current) return;
     mutation();
     setResult(null);
@@ -140,13 +174,13 @@ export default function WriterView() {
   }
 
   function updateDraft(key, value) {
-    mutateWriterInput(() =>
+    mutateApplicantInput(() =>
       setDraft((current) => ({ ...current, [key]: value })),
     );
   }
 
   function updateRow(index, key, value) {
-    mutateWriterInput(() =>
+    mutateApplicantInput(() =>
       setRows((current) =>
         current.map((row, rowIndex) =>
           rowIndex === index ? { ...row, [key]: value } : row,
@@ -156,14 +190,41 @@ export default function WriterView() {
   }
 
   function removeRow(index) {
-    mutateWriterInput(() =>
+    mutateApplicantInput(() =>
       setRows((current) => current.filter((_, rowIndex) => rowIndex !== index)),
     );
   }
 
   function addRow() {
-    mutateWriterInput(() =>
+    mutateApplicantInput(() =>
       setRows((current) => [...current, { item: "", amount: "" }]),
+    );
+  }
+
+  function updateAttachmentRow(index, key, value) {
+    mutateApplicantInput(() =>
+      setAttachmentRows((current) =>
+        current.map((row, rowIndex) =>
+          rowIndex === index ? { ...row, [key]: value } : row,
+        ),
+      ),
+    );
+  }
+
+  function removeAttachmentRow(index) {
+    mutateApplicantInput(() =>
+      setAttachmentRows((current) =>
+        current.filter((_, rowIndex) => rowIndex !== index),
+      ),
+    );
+  }
+
+  function addAttachmentRow() {
+    mutateApplicantInput(() =>
+      setAttachmentRows((current) => [
+        ...current,
+        { name: "", represents: "" },
+      ]),
     );
   }
 
@@ -201,6 +262,18 @@ export default function WriterView() {
           "Add at least two budget lines before checking the draft.",
         );
       }
+      const listedAttachments = attachmentRows.filter(
+        (row) => row.name.trim() || row.represents.trim(),
+      );
+      if (
+        listedAttachments.some(
+          (row) => !row.name.trim() || !row.represents.trim(),
+        )
+      ) {
+        throw new Error(
+          "Complete both fields for each listed attachment before checking the draft.",
+        );
+      }
 
       const fields = [
         {
@@ -211,14 +284,16 @@ export default function WriterView() {
           order: 1,
         },
       ];
+      let nextOrder = 2;
       if (draft.fundingStream === "stream_three" && draft.criterion1.trim()) {
         fields.push({
           id: "criterion_1",
           header: "Criterion 1: experience, resources and capability",
           type: "criterion",
           text: draft.criterion1.trim(),
-          order: 2,
+          order: nextOrder,
         });
+        nextOrder += 1;
       }
       fields.push({
         id: "budget",
@@ -227,7 +302,22 @@ export default function WriterView() {
         text: activeRows
           .map((row) => `${row.item.trim()} | $${row.amount.trim()}`)
           .join("\n"),
-        order: 3,
+        order: nextOrder,
+      });
+      nextOrder += 1;
+      fields.push({
+        id: "attachments",
+        header: "Attachment checklist",
+        type: "attachments",
+        text: listedAttachments.length
+          ? listedAttachments
+              .map(
+                (row, index) =>
+                  `${index + 1}. ${row.name.trim()} | Represents: ${row.represents.trim()}`,
+              )
+              .join("\n")
+          : "No attachments listed.",
+        order: nextOrder,
       });
       setProgress({
         phase: "reviewing",
@@ -244,7 +334,7 @@ export default function WriterView() {
       );
       data.append("fields", JSON.stringify(fields));
       setResult(
-        await checkWriter(data, (update) => {
+        await checkApplicant(data, (update) => {
           if (update.type === "fields") {
             setProgress({
               phase: "reviewing",
@@ -278,10 +368,10 @@ export default function WriterView() {
   }
 
   return (
-    <div className="writer-layout">
+    <div className="applicant-layout">
       <section>
         <div className="section-intro">
-          <span className="eyebrow">Writer view</span>
+          <span className="eyebrow">Applicant view</span>
           <h2>Build and check your application draft</h2>
           <p>
             This synthetic form mirrors the main parts of the 2026 NAIDOC
@@ -289,6 +379,48 @@ export default function WriterView() {
             guidance while you remain the author.
           </p>
         </div>
+        <section
+          className="applicant-guidance"
+          aria-labelledby="applicant-guidance-title"
+        >
+          <div className="applicant-guidance-heading">
+            <div>
+              <h3 id="applicant-guidance-title">
+                Guidance used for these checks
+              </h3>
+              <p>Read-only NAIDOC source documents</p>
+            </div>
+            <span>Preloaded</span>
+          </div>
+          <div className="applicant-guidance-documents">
+            {GUIDANCE_DOCUMENTS.map((document) => (
+              <article
+                className="applicant-guidance-document"
+                key={document.key}
+              >
+                <span className="guidance-pdf-mark" aria-hidden="true">
+                  PDF
+                </span>
+                <div>
+                  <span>{document.kind}</span>
+                  <strong title={document.name}>{document.name}</strong>
+                </div>
+                <button
+                  type="button"
+                  onClick={() =>
+                    setPreview({
+                      label: document.name,
+                      url: `/api/demo/files/${document.key}`,
+                    })
+                  }
+                  aria-label={`Preview ${document.kind}`}
+                >
+                  Preview
+                </button>
+              </article>
+            ))}
+          </div>
+        </section>
         <div className="demo-data-note">
           <strong>Prototype data only</strong>
           <span>
@@ -297,10 +429,10 @@ export default function WriterView() {
             review.
           </span>
         </div>
-        <form onSubmit={submit} className="writer-form">
-          <fieldset className="writer-inputs" disabled={loading}>
-            <section className="writer-section">
-              <div className="writer-section-heading">
+        <form onSubmit={submit} className="applicant-form">
+          <fieldset className="applicant-inputs" disabled={loading}>
+            <section className="applicant-section">
+              <div className="applicant-section-heading">
                 <span>1</span>
                 <div>
                   <h3>Applicant details</h3>
@@ -367,8 +499,8 @@ export default function WriterView() {
               </div>
             </section>
 
-            <section className="writer-section">
-              <div className="writer-section-heading">
+            <section className="applicant-section">
+              <div className="applicant-section-heading">
                 <span>2</span>
                 <div>
                   <h3>Activity or event</h3>
@@ -425,7 +557,7 @@ export default function WriterView() {
                     {draft.activityDescription.length}/2,000 characters ·
                     Explain the activity and how it meets the grant objectives.
                   </small>
-                  <WriterFieldFeedback
+                  <ApplicantFieldFeedback
                     section={sections.get("activity_description")}
                   />
                 </label>
@@ -503,8 +635,8 @@ export default function WriterView() {
             </section>
 
             {draft.fundingStream === "stream_three" && (
-              <section className="writer-section conditional-section">
-                <div className="writer-section-heading">
+              <section className="applicant-section conditional-section">
+                <div className="applicant-section-heading">
                   <span>3</span>
                   <div>
                     <h3>Stream Three assessment criterion</h3>
@@ -528,13 +660,13 @@ export default function WriterView() {
                     {draft.criterion1.length}/6,000 characters · Address value,
                     experience, resources, risks and intended outcomes.
                   </small>
-                  <WriterFieldFeedback section={sections.get("criterion_1")} />
+                  <ApplicantFieldFeedback section={sections.get("criterion_1")} />
                 </label>
               </section>
             )}
 
-            <section className="writer-section">
-              <div className="writer-section-heading">
+            <section className="applicant-section">
+              <div className="applicant-section-heading">
                 <span>
                   {draft.fundingStream === "stream_three" ? "4" : "3"}
                 </span>
@@ -644,6 +776,86 @@ export default function WriterView() {
                 </div>
               </div>
             </section>
+
+            <section className="applicant-section">
+              <div className="applicant-section-heading">
+                <span>
+                  {draft.fundingStream === "stream_three" ? "5" : "4"}
+                </span>
+                <div>
+                  <h3>Attachments</h3>
+                  <p>
+                    List the documents you intend to include and what each one
+                    represents.
+                  </p>
+                </div>
+              </div>
+              <div className="attachment-checklist ai-field">
+                <div className="field-label-row attachment-checklist-title">
+                  <strong>Attachment checklist</strong>
+                  <span className="ai-check-label">AI check</span>
+                </div>
+                <div className="attachment-rows">
+                  {attachmentRows.length ? (
+                    attachmentRows.map((row, index) => (
+                      <div className="attachment-row" key={index}>
+                        <div className="attachment-row-heading">
+                          <strong>Attachment {index + 1}</strong>
+                          <button
+                            type="button"
+                            className="remove-line-button"
+                            onClick={() => removeAttachmentRow(index)}
+                            aria-label={`Remove attachment ${index + 1}`}
+                          >
+                            Remove
+                          </button>
+                        </div>
+                        <div className="attachment-fields">
+                          <label className="field">
+                            <span>Attachment name</span>
+                            <input
+                              value={row.name}
+                              placeholder="For example, bank statement.pdf"
+                              onChange={(event) =>
+                                updateAttachmentRow(
+                                  index,
+                                  "name",
+                                  event.target.value,
+                                )
+                              }
+                            />
+                          </label>
+                          <label className="field">
+                            <span>What this attachment represents</span>
+                            <input
+                              value={row.represents}
+                              placeholder="For example, bank account evidence"
+                              onChange={(event) =>
+                                updateAttachmentRow(
+                                  index,
+                                  "represents",
+                                  event.target.value,
+                                )
+                              }
+                            />
+                          </label>
+                        </div>
+                      </div>
+                    ))
+                  ) : (
+                    <p className="attachment-empty">No attachments listed.</p>
+                  )}
+                </div>
+                <button
+                  type="button"
+                  className="text-button attachment-add-button"
+                  onClick={addAttachmentRow}
+                >
+                  + Add attachment
+                </button>
+                <ApplicantFieldFeedback section={sections.get("attachments")} />
+              </div>
+            </section>
           </fieldset>
 
           {error && (
@@ -651,15 +863,12 @@ export default function WriterView() {
               {error}
             </div>
           )}
-          <aside className="advisory-note" aria-label="Advisory check safeguard">
-            <strong>Advisory only</strong>
-            <span>
-              GOGgles never blocks submission or auto-rejects an application.
-              Writers can continue when a field is unchecked or flagged, or if
-              the AI check fails. Writers decide whether to act on the feedback
-              and remain the author of every change.
-            </span>
-          </aside>
+          <p className="advisory-copy">
+            <strong>Review assistance only.</strong>{" "}
+            GOGgles never auto-rejects or stops an application from proceeding.
+            Applicants verify every finding, decide whether to act and remain the
+            author of every change.
+          </p>
           <div className="submit-row">
             <p>Each marked answer is checked in a separate call.</p>
             <button className="primary-button" disabled={loading}>
@@ -677,6 +886,7 @@ export default function WriterView() {
           )}
         </form>
       </section>
+      <PreviewModal preview={preview} onClose={() => setPreview(null)} />
     </div>
   );
 }

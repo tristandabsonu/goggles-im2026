@@ -9,8 +9,8 @@ test-cases/pdf/     Six generated synthetic application PDFs used by the demo
 test-cases/source/  Markdown source for those synthetic applications
 test-cases/expected-results.md
                     Local human answer key; never send this file to Gemini
-test-cases/writer-smoke-test.md
-                    Isolated writer-view budget check
+test-cases/applicant-smoke-test.md
+                    Isolated applicant-view budget check
 scripts/            Synthetic-document generation and styling scripts
 ```
 

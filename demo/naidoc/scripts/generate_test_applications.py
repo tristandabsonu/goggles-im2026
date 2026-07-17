@@ -17,7 +17,7 @@ NAIDOC_ROOT = Path(__file__).resolve().parents[1]
 SOURCE_FORM = NAIDOC_ROOT / "documents" / "NAIDOC 2026 - Sample Application Form.pdf"
 TEST_CASES_DIR = NAIDOC_ROOT / "test-cases"
 MARKDOWN_DIR = TEST_CASES_DIR / "source"
-WRITER_SMOKE_PATH = TEST_CASES_DIR / "writer-smoke-test.md"
+APPLICANT_SMOKE_PATH = TEST_CASES_DIR / "applicant-smoke-test.md"
 
 
 def extract_form_text() -> str:
@@ -1204,12 +1204,12 @@ def fill_form_inline(form_text: str, s: dict) -> tuple[str, list[str]]:
     return "\n".join(lines), question_anchors
 
 
-def render_writer_smoke() -> str:
-    return """# Writer-view smoke test - isolated budget field
+def render_applicant_smoke() -> str:
+    return """# Applicant-view smoke test - isolated budget field
 
 > **SYNTHETIC TEST INPUT - NOT AN OFFICIAL SUBMISSION**
 
-Only this budget field is supplied to the writer-view assessment call. No other draft fields are in context.
+Only this budget field is supplied to the applicant-view assessment call. No other draft fields are in context.
 
 ## Application Form instructions
 
@@ -1242,7 +1242,7 @@ def main() -> None:
         target = MARKDOWN_DIR / f"synthetic-application-{scenario['id']}.md"
         target.write_text(render_application(form_text, scenario), encoding="utf-8")
 
-    WRITER_SMOKE_PATH.write_text(render_writer_smoke(), encoding="utf-8")
+    APPLICANT_SMOKE_PATH.write_text(render_applicant_smoke(), encoding="utf-8")
 
 
 if __name__ == "__main__":

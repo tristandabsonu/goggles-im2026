@@ -11,11 +11,16 @@ export default function HowItWorksView() {
       <section className="examples-hero">
         <div className="examples-hero-inner">
           <span className="eyebrow">How it works</span>
-          <h1>Put judgement back at the centre of grant assessment.</h1>
+          <h1>
+            Catch what's fixable.
+            <br />
+            Judge what matters.
+          </h1>
           <p>
-            The mechanical part of a grant check is the part a machine can do.
-            GOGgles takes that first pass and shows its sources, so people can
-            spend their time on merit, evidence and local context.
+            Every grant check starts with mechanical questions: right stream,
+            itemised budget, mandatory attachments. GOGgles takes that first pass
+            for applicants and assessors alike, shows the source behind every
+            comment, and leaves every judgement with a person.
           </p>
         </div>
       </section>
@@ -62,7 +67,7 @@ export default function HowItWorksView() {
               <p>
                 A leveller for the grants process. Communities without
                 grant-writing experience get the kind of feedback an experienced
-                writer would give before submission, while assessors get the
+                grant writer would give before submission, while assessors get the
                 mechanical first pass done for them, freeing their judgement for
                 merit, evidence and local context. Every finding traces back to the
                 supplied guidance for a person to verify, and every decision
@@ -75,7 +80,7 @@ export default function HowItWorksView() {
             <h2>The idea</h2>
             <div className="how-narrative-copy">
               <p>
-                One assessment engine, two views. The Writer view checks a draft
+                One assessment engine, two views. The Applicant view checks a draft
                 before submission and shows the applicant what needs attention
                 without writing the answer for them. The Assessor view checks a
                 submitted application against its rulebook and surfaces the
@@ -88,7 +93,7 @@ export default function HowItWorksView() {
               </p>
               <p className="how-principle">
                 <strong>GOGgles is not a submission gatekeeper.</strong>{" "}
-                A writer can still submit when a field is unchecked or flagged,
+                An applicant can still submit when a field is unchecked or flagged,
                 and the application continues if the AI check fails. GOGgles
                 never auto-rejects an application.
               </p>
@@ -167,7 +172,7 @@ export default function HowItWorksView() {
               </div>
 
               <p>
-                Writer guidance belongs inside the application form, while
+                Applicant guidance belongs inside the application form, while
                 assessor findings belong inside the existing grant-management
                 workflow. The original application and every decision stay with
                 people, and an AI failure must never prevent an application from

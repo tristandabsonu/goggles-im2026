@@ -11,7 +11,7 @@ from backend.models import (
     AssessorCheckResult,
     ExtractedSection,
     SectionExtractionResult,
-    WriterCheckResult,
+    ApplicantCheckResult,
 )
 
 
@@ -124,6 +124,23 @@ def test_compiled_frontend_is_served_from_the_root() -> None:
     assert "Extracting assessable sections" in javascript
     assert "See how it works" in javascript
     assert "Try it now" in javascript
+    assert "Applicant view" in javascript
+    assert "Writer view" not in javascript
+    assert "GOGgles checks selected draft answers" in javascript
+    assert "You remain the author and decide what to change." in javascript
+    assert "Put judgement back at the centre of grant assessment." in javascript
+    assert "GOGgles finds supported mechanical issues" in javascript
+    assert "Every judgement remains with a person." in javascript
+    assert "Catch what's fixable." in javascript
+    assert "Judge what matters." in javascript
+    assert "Every grant check starts with mechanical questions" in javascript
+    assert "for applicants and assessors alike" in javascript
+    assert "Guidance used for these checks" in javascript
+    assert "Read-only NAIDOC source documents" in javascript
+    assert "Selection Criteria (GOG)" in javascript
+    assert "PDF preview" in javascript
+    assert "Attachment checklist" in javascript
+    assert "It does not upload, open, authenticate or verify" not in javascript
     assert "Skip to main content" in javascript
     assert "Put judgement back at the centre of grant assessment." in javascript
     assert "Use GOGgles in three steps." in javascript
@@ -161,10 +178,11 @@ def test_compiled_frontend_is_served_from_the_root() -> None:
     assert "Extracted proposal sections" in javascript
     assert "Not assessed" in javascript
     assert "sent to Gemini for this check" in javascript
-    assert "GOGgles never blocks submission or auto-rejects" in javascript
+    assert "Applicants verify every finding, decide whether to act" in javascript
     assert "GOGgles cannot stop or auto-reject an application" in javascript
     assert "GOGgles is not a submission gatekeeper." in javascript
-    assert "See GOGgles results without the wait." in javascript
+    assert "See GOGgles results" in javascript
+    assert "without the wait." in javascript
     assert "Live checks usually take 60–180 seconds." in javascript
     assert "About model variability" in javascript
     assert "live runs may use a different configured model" in javascript
@@ -182,6 +200,17 @@ def test_compiled_frontend_is_served_from_the_root() -> None:
         "NAIDOC 2026 Local Grants - Applicants Guide.pdf",
     ):
         assert filename in javascript
+
+
+def test_home_defaults_to_the_applicant_view() -> None:
+    source = (
+        Path(__file__).resolve().parents[1] / "frontend" / "src" / "App.jsx"
+    ).read_text()
+
+    assert 'useState("applicant")' in source
+    assert source.index("<span>Applicant</span>") < source.index(
+        "<span>Assessor</span>"
+    )
 
 
 def test_standalone_pages_support_direct_navigation() -> None:
@@ -324,26 +353,28 @@ def test_assessor_stream_rejects_non_pdf_content() -> None:
     assert "valid PDF data" in response.json()["detail"]
 
 
-def test_writer_stream_reviews_known_fields_without_extraction(
+def test_applicant_stream_reviews_known_fields_without_extraction(
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
-    assessment = WriterCheckResult(sections=[])
+    assessment = ApplicantCheckResult(sections=[])
     captured = {}
 
     def fake_steps(bundle, fields, settings):
         captured["bundle"] = bundle
         ordered = sorted(fields, key=lambda field: field.order)
-        yield ordered[0], 1, 2
-        yield ordered[1], 2, 2
+        for current, field in enumerate(ordered, start=1):
+            yield field, current, len(ordered)
         return assessment
 
-    monkeypatch.setattr("backend.app.iter_writer_assessment_steps", fake_steps)
+    monkeypatch.setattr("backend.app.iter_applicant_assessment_steps", fake_steps)
     pdf = b"%PDF-1.7\ntest"
     fields = (
         '[{"id":"budget","header":"Budget","type":"budget",'
         '"text":"Other: $1,000","order":2},'
         '{"id":"activity_description","header":"Activity description",'
-        '"type":"description","text":"A synthetic activity.","order":1}]'
+        '"type":"description","text":"A synthetic activity.","order":1},'
+        '{"id":"attachments","header":"Attachment checklist",'
+        '"type":"attachments","text":"No attachments listed.","order":3}]'
     )
     files = [
         ("gog", ("gog.pdf", pdf, "application/pdf")),
@@ -355,7 +386,7 @@ def test_writer_stream_reviews_known_fields_without_extraction(
         post_to_app(
             create_app(make_settings()),
             files=files,
-            path="/api/writer/check/stream",
+            path="/api/applicant/check/stream",
         )
     )
     events = parse_event_stream(response.text)
@@ -366,18 +397,22 @@ def test_writer_stream_reviews_known_fields_without_extraction(
         "fields",
         "progress",
         "progress",
+        "progress",
         "complete",
     ]
     assert events[0]["fields"] == [
         {"id": "activity_description", "header": "Activity description"},
         {"id": "budget", "header": "Budget"},
+        {"id": "attachments", "header": "Attachment checklist"},
     ]
     assert [event.get("phase") for event in events] == [
         None,
+        "reviewing",
         "reviewing",
         "reviewing",
         None,
     ]
     assert events[1]["label"] == "Reviewing “Activity description”"
     assert events[2]["label"] == "Reviewing “Budget”"
+    assert events[3]["label"] == "Reviewing “Attachment checklist”"
     assert not hasattr(captured["bundle"], "grant_application")

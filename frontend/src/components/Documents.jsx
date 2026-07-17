@@ -101,7 +101,7 @@ export function PreviewModal({ preview, onClose }) {
       >
         <div className="preview-heading">
           <div>
-            <span className="eyebrow">Attached PDF</span>
+            <span className="eyebrow">PDF preview</span>
             <h2>{preview.label}</h2>
           </div>
           <button type="button" onClick={onClose} aria-label="Close preview">

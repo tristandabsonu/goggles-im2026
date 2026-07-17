@@ -3,9 +3,9 @@ import { useEffect, useRef, useState } from "react";
 import assessorA from "../assets/how-it-works/assessor_viewA.jpg";
 import assessorB from "../assets/how-it-works/assessor_viewB.jpg";
 import assessorC from "../assets/how-it-works/assessor_viewC.jpg";
-import writerA from "../assets/how-it-works/writer_viewA.jpg";
-import writerB from "../assets/how-it-works/writer_viewB.jpg";
-import writerC from "../assets/how-it-works/writer_viewC.jpg";
+import applicantA from "../assets/how-it-works/applicant_viewA.jpg";
+import applicantB from "../assets/how-it-works/applicant_viewB.jpg";
+import applicantC from "../assets/how-it-works/applicant_viewC.jpg";
 
 const FRAME_INTERVAL_MS = 1400;
 
@@ -36,17 +36,17 @@ const VIEWS = [
     frames: [assessorA, assessorB, assessorC],
   },
   {
-    id: "writer",
-    label: "Writer",
+    id: "applicant",
+    label: "Applicant",
     description: "Check a draft before submitting",
     steps: [
       {
         title: "Write the draft",
-        body: "Complete the form in Writer view. Administrative details stay in the browser; only answers marked “AI check” are prepared for review.",
+        body: "Complete the form in Applicant view. Administrative details stay in the browser; only answers and the attachment checklist marked “AI check” are prepared for review.",
       },
       {
         title: "Check the marked fields",
-        body: "Press “Check assessable fields”. GOGgles sends each marked answer in its own call with the applicant-facing guidance documents.",
+        body: "Press “Check assessable fields”. GOGgles sends each marked answer or checklist in its own call with the applicant-facing guidance documents.",
       },
       {
         title: "Write the change",
@@ -54,11 +54,11 @@ const VIEWS = [
       },
     ],
     backend:
-      "Writer view needs no proposal upload and no extraction pass. Each marked field is checked by itself, so another draft answer cannot silently fill in a gap.",
+      "Applicant view needs no proposal upload and no extraction pass. Each marked field, including the metadata-only attachment checklist, is checked by itself, so another draft answer cannot silently fill in a gap.",
     figureLabel:
-      "Writer backend workflow: isolated draft fields reviewed sequentially against applicant-facing guidance documents.",
+      "Applicant backend workflow: isolated draft fields reviewed sequentially against applicant-facing guidance documents.",
     progressLabel: "Reviewing draft field",
-    frames: [writerA, writerB, writerC],
+    frames: [applicantA, applicantB, applicantC],
   },
 ];
 

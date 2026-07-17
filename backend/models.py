@@ -152,8 +152,8 @@ class CriterionAssessmentResult(BaseModel):
     findings: list[AssessmentFinding]
 
 
-class WriterFieldAssessmentResult(BaseModel):
-    """Structured feedback for one isolated non-budget writer field."""
+class ApplicantFieldAssessmentResult(BaseModel):
+    """Structured feedback for one isolated non-budget applicant field."""
 
     section_id: str
     findings: list[AssessmentFinding]
@@ -195,19 +195,25 @@ class AssessorCheckResult(BaseModel):
     threshold_flags: list[ThresholdFlag]
 
 
-class WriterDraftField(BaseModel):
-    """One isolated applicant draft field submitted for writer feedback."""
+class ApplicantDraftField(BaseModel):
+    """One isolated applicant draft field submitted for applicant feedback."""
 
     id: str
     header: str
-    type: Literal["budget", "description", "criterion", "generic"]
+    type: Literal[
+        "budget",
+        "description",
+        "criterion",
+        "attachments",
+        "generic",
+    ]
     text: str
     order: int = Field(ge=1)
 
 
-class WriterCheckResult(BaseModel):
-    """Writer result with the same top-level shape as the assessor result."""
+class ApplicantCheckResult(BaseModel):
+    """Applicant result with the same top-level shape as the assessor result."""
 
-    mode: Literal["writer"] = "writer"
+    mode: Literal["applicant"] = "applicant"
     sections: list[AssessedSection]
     threshold_flags: list[ThresholdFlag] = Field(default_factory=list)

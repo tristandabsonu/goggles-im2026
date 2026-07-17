@@ -67,7 +67,11 @@ export default function ExampleResultsView() {
       <section className="examples-hero">
         <div className="examples-hero-inner">
           <span className="eyebrow">Example results</span>
-          <h1>See GOGgles results without the wait.</h1>
+          <h1>
+            See GOGgles results
+            <br />
+            without the wait.
+          </h1>
           <p>
             Explore six captured runs of the supported checks on synthetic
             proposals, rendered exactly like the Assessor results on the homepage.

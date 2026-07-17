@@ -15,7 +15,7 @@ from backend.config import Settings
 from backend.documents import (
     AssessorDocumentBundle,
     PdfDocument,
-    WriterDocumentBundle,
+    ApplicantDocumentBundle,
 )
 from backend.models import (
     AssessedSection,
@@ -26,9 +26,9 @@ from backend.models import (
     ExtractedSection,
     FundingStreamAssessmentResult,
     SectionExtractionResult,
-    WriterCheckResult,
-    WriterDraftField,
-    WriterFieldAssessmentResult,
+    ApplicantCheckResult,
+    ApplicantDraftField,
+    ApplicantFieldAssessmentResult,
 )
 from backend.prompts import (
     ATTACHMENT_ASSESSMENT_PROMPT,
@@ -36,9 +36,10 @@ from backend.prompts import (
     CRITERION_ASSESSMENT_PROMPT,
     FUNDING_STREAM_ASSESSMENT_PROMPT,
     SECTION_EXTRACTION_PROMPT,
-    WRITER_BUDGET_ASSESSMENT_PROMPT,
-    WRITER_CRITERION_ASSESSMENT_PROMPT,
-    WRITER_DESCRIPTION_ASSESSMENT_PROMPT,
+    APPLICANT_ATTACHMENT_ASSESSMENT_PROMPT,
+    APPLICANT_BUDGET_ASSESSMENT_PROMPT,
+    APPLICANT_CRITERION_ASSESSMENT_PROMPT,
+    APPLICANT_DESCRIPTION_ASSESSMENT_PROMPT,
 )
 
 logger = logging.getLogger(__name__)
@@ -77,7 +78,7 @@ def _assessor_document_parts(bundle: AssessorDocumentBundle) -> list[types.Part]
     )
 
 
-def _writer_document_parts(bundle: WriterDocumentBundle) -> list[types.Part]:
+def _applicant_document_parts(bundle: ApplicantDocumentBundle) -> list[types.Part]:
     """Return applicant-facing documents in their stable caching order."""
 
     return _document_parts(
@@ -188,13 +189,13 @@ def _enforce_clarification_evidence(
         item.clarification_evidence = None
 
 
-def _enforce_writer_budget_isolation(result: BudgetAssessmentResult) -> None:
-    """Prevent isolated Writer feedback from relying on another draft field."""
+def _enforce_applicant_budget_isolation(result: BudgetAssessmentResult) -> None:
+    """Prevent isolated Applicant feedback from relying on another draft field."""
 
     for item in result.items:
         if item.classification == "clarified_elsewhere":
             logger.info(
-                "Writer budget item %r was downgraded because Writer mode "
+                "Applicant budget item %r was downgraded because Applicant mode "
                 "cannot use another draft field.",
                 item.item,
             )
@@ -564,21 +565,21 @@ def assess_application(
             return completed.value
 
 
-def assess_writer_budget_field(
-    bundle: WriterDocumentBundle,
-    field: WriterDraftField,
+def assess_applicant_budget_field(
+    bundle: ApplicantDocumentBundle,
+    field: ApplicantDraftField,
     settings: Settings,
     *,
     client: genai.Client | None = None,
 ) -> BudgetAssessmentResult:
-    """Assess one isolated writer budget field without any other draft answers."""
+    """Assess one isolated applicant budget field without any other draft answers."""
 
     if field.type != "budget":
-        raise ValueError("assess_writer_budget_field requires a budget field")
+        raise ValueError("assess_applicant_budget_field requires a budget field")
 
     gemini_client = client or _new_client(settings)
-    document_parts = _writer_document_parts(bundle)
-    prompt = WRITER_BUDGET_ASSESSMENT_PROMPT.format(budget_text=field.text)
+    document_parts = _applicant_document_parts(bundle)
+    prompt = APPLICANT_BUDGET_ASSESSMENT_PROMPT.format(budget_text=field.text)
     result, response = _generate_structured(
         gemini_client,
         settings,
@@ -586,40 +587,45 @@ def assess_writer_budget_field(
         prompt,
         BudgetAssessmentResult,
         max_output_tokens=5_000,
-        call_name="writer_budget_assessment",
+        call_name="applicant_budget_assessment",
     )
 
     if result is None:
         raise RuntimeError(
-            f"Gemini did not return writer budget feedback (finish reason: "
+            f"Gemini did not return applicant budget feedback (finish reason: "
             f"{_finish_reason(response)})."
         )
 
-    _enforce_writer_budget_isolation(result)
+    _enforce_applicant_budget_isolation(result)
     return result
 
 
-def assess_writer_text_field(
-    bundle: WriterDocumentBundle,
-    field: WriterDraftField,
+def assess_applicant_text_field(
+    bundle: ApplicantDocumentBundle,
+    field: ApplicantDraftField,
     settings: Settings,
     *,
     client: genai.Client | None = None,
-) -> WriterFieldAssessmentResult:
-    """Assess one isolated activity description or Stream Three criterion."""
+) -> ApplicantFieldAssessmentResult:
+    """Assess one isolated applicant text field or attachment checklist."""
 
     prompt_templates = {
-        "description": WRITER_DESCRIPTION_ASSESSMENT_PROMPT,
-        "criterion": WRITER_CRITERION_ASSESSMENT_PROMPT,
+        "description": APPLICANT_DESCRIPTION_ASSESSMENT_PROMPT,
+        "criterion": APPLICANT_CRITERION_ASSESSMENT_PROMPT,
+        "attachments": APPLICANT_ATTACHMENT_ASSESSMENT_PROMPT,
     }
     if field.type not in prompt_templates:
         raise ValueError(
-            "assess_writer_text_field requires a description or criterion field"
+            "assess_applicant_text_field requires a description, criterion or "
+            "attachments field"
         )
 
     gemini_client = client or _new_client(settings)
-    document_parts = _writer_document_parts(bundle)
-    prompt = prompt_templates[field.type].format(field_text=field.text)
+    document_parts = _applicant_document_parts(bundle)
+    prompt_value_name = (
+        "attachments_text" if field.type == "attachments" else "field_text"
+    )
+    prompt = prompt_templates[field.type].format(**{prompt_value_name: field.text})
     retry_instruction = (
         "\n\nYour previous response was incomplete. Return the complete, concise "
         "structured result now. Do not add prose outside the required result."
@@ -634,14 +640,14 @@ def assess_writer_text_field(
                 settings,
                 document_parts,
                 attempt_prompt,
-                WriterFieldAssessmentResult,
+                ApplicantFieldAssessmentResult,
                 max_output_tokens=5_000,
-                call_name=f"writer_{field.type}_assessment",
+                call_name=f"applicant_{field.type}_assessment",
             )
         except ValidationError as exc:
             if attempt == 0:
                 logger.warning(
-                    "Writer %s assessment returned invalid structured JSON; retrying once.",
+                    "Applicant %s assessment returned invalid structured JSON; retrying once.",
                     field.type,
                 )
                 continue
@@ -654,24 +660,24 @@ def assess_writer_text_field(
             return result
         if attempt == 0:
             logger.warning(
-                "Writer %s assessment returned no parsed output (finish reason: %s); "
+                "Applicant %s assessment returned no parsed output (finish reason: %s); "
                 "retrying once.",
                 field.type,
                 last_finish_reason,
             )
 
     raise RuntimeError(
-        f"Gemini did not return complete writer {field.type} feedback after a "
+        f"Gemini did not return complete applicant {field.type} feedback after a "
         f"retry (last finish reason: {last_finish_reason})."
     )
 
 
-def iter_writer_assessment_steps(
-    bundle: WriterDocumentBundle,
-    fields: list[WriterDraftField],
+def iter_applicant_assessment_steps(
+    bundle: ApplicantDocumentBundle,
+    fields: list[ApplicantDraftField],
     settings: Settings,
-) -> Generator[tuple[WriterDraftField, int, int], None, WriterCheckResult]:
-    """Yield each writer field immediately before its isolated assessment."""
+) -> Generator[tuple[ApplicantDraftField, int, int], None, ApplicantCheckResult]:
+    """Yield each applicant field immediately before its isolated assessment."""
 
     sections: list[AssessedSection] = []
     ordered_fields = sorted(fields, key=lambda item: item.order)
@@ -687,16 +693,16 @@ def iter_writer_assessment_steps(
             assessed.error = "This field type is not implemented in the prototype yet."
         elif field.type == "budget":
             try:
-                result = assess_writer_budget_field(bundle, field, settings)
+                result = assess_applicant_budget_field(bundle, field, settings)
                 assessed.budget_items = result.items
             except Exception as exc:
                 assessed.error = f"This field could not be assessed: {exc}"
         else:
             try:
-                result = assess_writer_text_field(bundle, field, settings)
+                result = assess_applicant_text_field(bundle, field, settings)
                 assessed.findings = result.findings
             except Exception as exc:
                 assessed.error = f"This field could not be assessed: {exc}"
         sections.append(assessed)
 
-    return WriterCheckResult(sections=sections)
+    return ApplicantCheckResult(sections=sections)
