@@ -198,7 +198,7 @@ function HomePage() {
           <div className="hero-inner">
             <div className="hero-copy">
               <span className="eyebrow">
-                Grant guidance, with the source in sight
+                Grant opportunity, with the source in sight
               </span>
               {view === "applicant" ? (
                 <>
